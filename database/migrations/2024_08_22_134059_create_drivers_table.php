@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Models\User::class);
             $table->tinyInteger('is_activate')->default(0);
             $table->json('location_activate')->nullable();
             $table->timestamps();

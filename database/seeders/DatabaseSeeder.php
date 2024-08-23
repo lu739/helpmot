@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
                 'role' => UserRole::DRIVER->value,
             ]);
             $driver = Driver::factory()->create([
-                'id' => $user->id,
+                'user_id' => $user->id,
                 'is_activate' => fake()->numberBetween(0, 1),
             ]);
             if ($driver->is_activate) {
