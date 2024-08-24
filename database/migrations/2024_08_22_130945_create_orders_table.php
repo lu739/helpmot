@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('driver_id')->nullable()->constrained('users')->onDelete('restrict');
 
-            $table->string('status')->default(\App\Enum\OrderStatus::ACTIVE->value);
+            $table->string('status')->default(\App\Enum\OrderStatus::ACTIVE->value)->comment('статус заказа');
             $table->timestamps();
         });
     }
