@@ -7,20 +7,20 @@
     "paths": {
         "/api/": {},
         "/api/v1/login": {
-            "get": {
+            "post": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Логин юзера",
-                "operationId": "4938d8bfbbe58551ef0afbcf4dffa0e2",
+                "operationId": "a7c6d0e80cca08ce8e2dd4a8a393ab0a",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "email": {
+                                    "phone": {
                                         "type": "string",
-                                        "example": "test@test.com"
+                                        "example": "79161234567"
                                     },
                                     "password": {
                                         "type": "string",
@@ -39,9 +39,67 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "token": {
+                                        "access_token": {
                                             "type": "string",
                                             "example": "1|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        },
+                                        "refresh_token": {
+                                            "type": "string",
+                                            "example": "2|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Регистрация юзера",
+                "operationId": "2aeeb1635ddc5c62794513e63b3feeb3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "79161234567"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Some name"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        },
+                                        "refresh_token": {
+                                            "type": "string",
+                                            "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
                                         }
                                     },
                                     "type": "object"
