@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->dateTime('date_start')->nullable();
 
-            $table->string('status')->default(\App\Enum\OrderStatus::ACTIVE->value);
+            $table->string('status')->default(\App\Enum\OrderStatus::ACTIVE->value)->comment('статус заказа');
             $table->timestamps();
         });
     }

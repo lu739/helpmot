@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\User::class);
-            $table->tinyInteger('is_activate')->default(0);
-            $table->json('location_activate')->nullable();
+            $table->tinyInteger('is_activate')->default(0)->comment('он активный?');
+            $table->json('location_activate')->nullable()->comment('его локация (широта и долгота)');
             $table->timestamps();
         });
     }
