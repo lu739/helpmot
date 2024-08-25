@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -24,14 +25,28 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => $this->generateUniqueNumericId(),
             'name' => fake()->name(),
-            'phone' => fake()->phoneNumber(),
+            'phone' => '79' . fake()->numerify('#########'),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }
+
+    private function generateUniqueNumericId()
+    {
+        $randomNumber = mt_rand(10000000000000000, 99999999999999999);
+
+        // Проверка уникальности (рекурсивный вызов, если не уникально)
+        while (User::where('id', $randomNumber)->exists()) {
+            $randomNumber = mt_rand(10000000000000000, 99999999999999999);
+        }
+
+        return $randomNumber;
+    }
+
 
     /**
      * Indicate that the model's email address should be unverified.
