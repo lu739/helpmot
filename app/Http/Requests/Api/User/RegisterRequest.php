@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\User;
 
 use App\Http\Requests\Api\ApiRequest;
 
-class LoginRequest extends ApiRequest
+class RegisterRequest extends ApiRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class LoginRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'digits:11', 'exists:users,phone'],
+            'phone' => ['required', 'digits:11'],
+            'name' => ['nullable', 'string'],
             'password' => ['required'],
         ];
     }

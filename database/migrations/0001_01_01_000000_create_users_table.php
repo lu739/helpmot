@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id()->comment('id пользователя');
-            $table->string('name') ->comment('имя');
-            $table->string('role') ->comment('роль');
-            $table->string('phone')->comment('телефон');
-            $table->string('email')->unique()->comment('почта');
+            $table->string('name')->comment('имя');
+            $table->string('role')->comment('роль');
+            $table->string('phone')->unique()->comment('телефон');
+            $table->timestamp('phone_verified')->nullable()->comment('телефон подтвержден через смс');
+            $table->string('email')->unique()->nullable()->comment('почта');
             $table->timestamp('email_verified_at')->nullable()->comment('время подтверждения почты');
             $table->string('password')->comment('хешированнный пароль');
             $table->rememberToken();

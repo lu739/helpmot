@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'role',
+        'phone',
         'email',
         'password',
     ];
@@ -45,4 +47,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->id = self::generateUniqueNumericId();
+        });
+    }
+
+    private static function generateUniqueNumericId()
+    {
+        $randomNumber = mt_rand(10000000000000000, 99999999999999999);
+
+        // Проверка уникальности (рекурсивный вызов, если не уникально)
+        while (self::where('id', $randomNumber)->exists()) {
+            $randomNumber = mt_rand(10000000000000000, 99999999999999999);
+        }
+
+        return $randomNumber;
+    }
+
 }

@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,11 +24,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'),
         ]);
 
-        $maxBusyDrivers = 0;
-        foreach (range(1, 4) as $i) {
+        // Сидеры водителей
+        $busyDrivers = [];;
+        foreach (range(1, 5) as $i) {
             $user = User::factory()->create([
                 'role' => UserRole::DRIVER->value,
             ]);
+
             $driver = Driver::factory()->create([
                 'user_id' => $user->id,
                 'is_activate' => fake()->numberBetween(0, 1),
@@ -39,27 +42,32 @@ class DatabaseSeeder extends Seeder
                         'lat' => round(mt_rand(10 * 100000, 99 * 100000) / 100000, 5),
                     ]),
                 ]);
-                $maxBusyDrivers++;
+                $busyDrivers[] = $user->id;
             }
         }
 
-        User::factory(10)->create([
+        User::factory(14)->create([
             'role' => UserRole::CLIENT->value,
         ]);
 
-        $busyDriversCount = 0;
-        foreach (range(1, 20) as $i) {
-            $order = Order::factory()->create();
+
+        foreach (range(1, 25) as $i) {
+            $order = Order::factory()->create([
+                'client_id' => User::query()
+                            ->where('role', UserRole::CLIENT->value)
+                            ->inRandomOrder()
+                            ->first()->id,
+            ]);
             if ($order->status === OrderStatus::IN_PROGRESS->value) {
-                if ($busyDriversCount === $maxBusyDrivers) {
+                if (count($busyDrivers) === 0) {
                     $order->update([
                         'status' => OrderStatus::ACTIVE->value
                     ]);
                 } else {
                     $order->update([
-                        'driver_id' => $busyDriversCount + 1
+                        'driver_id' => $busyDrivers[0],
                     ]);
-                    $busyDriversCount++;
+                    array_shift($busyDrivers);
                 }
             }
         }

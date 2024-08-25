@@ -21,8 +21,8 @@ class OrderFactory extends Factory
         $statuses = array_map(fn($status) => $status->value, OrderStatus::cases());
 
         return [
-            'client_id' => fake()->numberBetween(6, 15),
             'status' => fake()->randomElement($statuses),
+            'date_start' => now(),
         ];
     }
 }
