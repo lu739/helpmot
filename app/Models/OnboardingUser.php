@@ -2,35 +2,25 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class OnboardingUser extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'id',
         'name',
         'role',
         'phone',
-        'email',
         'password',
+        'phone_code',
+        'phone_code_datetime',
+        'user_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
     ];
@@ -43,7 +33,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'phone_code_datetime' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -69,8 +59,8 @@ class User extends Authenticatable
         return $randomNumber;
     }
 
-    public function onboardingUser()
+    public function user()
     {
-        return $this->hasOne(OnboardingUser::class);
+        return $this->belongsTo(User::class);
     }
 }

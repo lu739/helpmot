@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id()->comment('id пользователя');
             $table->string('name')->comment('имя');
             $table->string('role')->comment('роль');
-            $table->string('phone')->unique()->comment('телефон');
+            $table->string('phone')->nullable()->comment('телефон');
             $table->timestamp('phone_verified')->nullable()->comment('телефон подтвержден через смс');
-            $table->string('email')->unique()->nullable()->comment('почта');
+            $table->unique(['role', 'phone'], 'role_phone_unique')->comment('признак уникальности связки роли и телефона');
+            $table->string('email')->unique()->nullable()->comment('электронная почта');
             $table->timestamp('email_verified_at')->nullable()->comment('время подтверждения почты');
             $table->string('password')->comment('хешированнный пароль');
-            $table->rememberToken();
             $table->timestamps();
         });
 
