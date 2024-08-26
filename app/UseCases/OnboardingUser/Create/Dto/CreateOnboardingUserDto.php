@@ -2,30 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\UseCases\User\Create\Dto;
+namespace App\UseCases\OnboardingUser\Create\Dto;
 
 use App\Enum\UserRole;
 
-class CreateUserDto
+class CreateOnboardingUserDto
 {
     private string $id;
+    private string $userId;
     private ?string $name;
-    private string $email;
     private string $phone;
     private UserRole $role;
     private string $password;
-    private ?string $phoneVerified;
+    private ?int $phoneСode;
+    private ?string $phoneСodeDatetime;
 
-    public function getPhoneVerified(): ?string
-    {
-        return $this->phoneVerified;
-    }
-
-    public function setPhoneVerified(?string $phoneVerified): CreateUserDto
-    {
-        $this->phoneVerified = $phoneVerified;
-        return $this;
-    }
 
 
     public function getId(): string
@@ -38,7 +29,15 @@ class CreateUserDto
         $this->id = $id;
         return $this;
     }
-
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+    public function setUserId(string $userId): CreateOnboardingUserDto
+    {
+        $this->userId = $userId;
+        return $this;
+    }
     public function getName(): ?string
     {
         return $this->name;
@@ -50,16 +49,6 @@ class CreateUserDto
         return $this;
     }
 
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        return $this;
-    }
 
     public function getPhone(): string
     {
@@ -91,6 +80,27 @@ class CreateUserDto
     public function setPassword(string $password): self
     {
         $this->password = $password;
+        return $this;
+    }
+    public function getPhoneСodeDatetime(): ?string
+    {
+        return $this->phoneСodeDatetime;
+    }
+
+    public function setPhoneСodeDatetime(?string $phoneСodeDatetime): self
+    {
+        $this->phoneСodeDatetime = $phoneСodeDatetime;
+        return $this;
+    }
+
+    public function getPhoneСode(): ?int
+    {
+        return $this->phoneСode;
+    }
+
+    public function setPhoneСode(?int $phoneСode): self
+    {
+        $this->phoneСode = $phoneСode;
         return $this;
     }
 }
