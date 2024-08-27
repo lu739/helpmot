@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Driver;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Driver\DriverResource;
 use App\Models\Driver;
+use App\Services\Exceptions\Driver\DriverNotActiveException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -44,6 +45,10 @@ class DriverController extends Controller implements HasMiddleware
     public function show(Driver $driver)
     {
         $showDriver = Driver::find($driver->id);
+
+        if (!$showDriver->isActive()) {
+            throw new DriverNotActiveException();
+        }
 
         return response()->json([
             'data' => DriverResource::make($showDriver)->resolve(),

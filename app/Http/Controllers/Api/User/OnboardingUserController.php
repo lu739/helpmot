@@ -75,7 +75,7 @@ class OnboardingUserController extends Controller
                         'phone' => $createOnboardingUserDto->getPhone(),
                         'sender' => 'SMS DUCKOHT',
                         'clientId' => $createOnboardingUserDto->getId(),
-                        'text' => 'Код подтвердения ' . $createOnboardingUserDto->getPhoneСode(),
+                        'text' => 'Код подтверждения ' . $createOnboardingUserDto->getPhoneСode() . '\nВаш "HelpMot"',
                     ],
                 ],
                 'login' => env('SMS_LOGIN'),
