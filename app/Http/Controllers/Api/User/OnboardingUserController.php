@@ -6,9 +6,10 @@ use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\OnboardingRequest;
 use App\Http\Resources\OnboardingUser\OnboardingClientResource;
+use App\Models\OnboardingUser;
+use App\Services\ConfirmSms\ConfirmSmsService;
 use App\UseCases\OnboardingUser\Create\CreateOnboardingUserUseCase;
 use App\UseCases\OnboardingUser\Create\Dto\CreateOnboardingUserDto;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -22,9 +23,10 @@ use Illuminate\Support\Str;
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
- *                  @OA\Property(property="phone", type="string", example="79161234567"),
- *                  @OA\Property(property="password", type="string", example="12345678"),
- *                  @OA\Property(property="name", type="string", example="Some name"),
+ *                  @OA\Property(property="phone", type="string", example="79161234567", description="Телефон юзера", nullable=false),
+ *                  @OA\Property(property="password", type="string", example="1234567s", description="Пароль юзера", nullable=false),
+ *                  @OA\Property(property="name", type="string", example="Some name", default="Some name", description="Имя юзера", nullable=true),
+ *                  @OA\Property(property="role", type="string", example="driver", enum={"client", "driver"}, default="client", description="Роль юзера", nullable=true),
  *             )
  *         )
  *     ),
@@ -46,6 +48,7 @@ class OnboardingUserController extends Controller
 {
     public function __construct(
         private readonly CreateOnboardingUserUseCase $createOnboardingUserUseCase,
+        private readonly ConfirmSmsService $confirmSmsService,
     )
     {
     }
@@ -54,47 +57,42 @@ class OnboardingUserController extends Controller
     {
         $data = $request->validated();
 
-        try {
-            DB::beginTransaction();
+        $onboardingUser = OnboardingUser::query()
+            ->where('phone', $data['phone'])
+            ->first();
 
-            $createOnboardingUserDto = (new CreateOnboardingUserDto())
-                ->setName($data['name'] ?? 'User_' . Str::random(8))
-                ->setPhone($data['phone'])
-                ->setPhoneСode(random_int(100000, 999999))
-                ->setPhoneСodeDatetime(now()->format('Y-m-d H:i:s'))
-                ->setPassword(bcrypt($data['password']))
-                ->setRole(UserRole::CLIENT);
-            $user = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
+        if (!$onboardingUser) {
+            try {
+                DB::beginTransaction();
 
-            DB::commit();
-// TODO если такой телефон уже есть в онбординге, то следующий код отправлять через n минут
-            $data = [
-                'messages' => [
-                    [
-                        'phone' => $createOnboardingUserDto->getPhone(),
-                        'sender' => 'SMS DUCKOHT',
-                        'clientId' => $user->id,
-                        'text' => 'Код подтверждения ' . $createOnboardingUserDto->getPhoneСode() . '. Ваш "HelpMot"',
-                    ],
-                ],
-                'login' => env('SMS_LOGIN'),
-                'password' => env('SMS_PASSWORD'),
-            ];
+                $createOnboardingUserDto = (new CreateOnboardingUserDto())
+                    ->setName($data['name'] ?? 'User_' . Str::random(8))
+                    ->setPhone($data['phone'])
+                    ->setPhoneСode(random_int(100000, 999999))
+                    ->setPhoneСodeDatetime(now()->format('Y-m-d H:i:s'))
+                    ->setPassword(bcrypt($data['password']))
+                    ->setRole(UserRole::CLIENT);
+                $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
 
-            $response = Http::post(env('SMS_ADDRESS'), $data);
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollBack();
 
-            if ($response->status() === 200) {
                 return response()->json([
-                    'user' => OnboardingClientResource::make($user)->resolve(),
-                ]);
-            } else {
-                throw new \Exception($response->body());
+                    'message' => $exception->getMessage()
+                ], 500);
             }
-        } catch (\Exception $exception) {
-            DB::rollBack();
+        }
 
+        $response = $this->confirmSmsService->setOnboardingUser($onboardingUser)->sendSmsToOnboardingUser();
+
+        if ($response->status() === 200 && $response->json()['status'] === 'OK') {
             return response()->json([
-                'message' => $exception->getMessage()
+                'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
+            ]);
+        } else {
+            return response()->json([
+                'message' => $response->json()['description'], // ToDO тут может лучше сделать сообщение, что нет связи с сервисом СМС?
             ], 500);
         }
     }

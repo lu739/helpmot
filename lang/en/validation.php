@@ -174,7 +174,11 @@ return [
 
     'custom' => [
         'attribute-name' => [
-            'rule-name' => 'custom-message',
+            'phone_required' => 'Phone is required',
+            'phone_format' => 'Phone has wrong format',
+            'password_required' => 'Password is required',
+            'password_min' => 'Password should have at least 8 characters',
+            'password_regex' => 'Password should have at least one letter and one number',
         ],
     ],
 
