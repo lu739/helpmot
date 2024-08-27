@@ -6,60 +6,6 @@
     },
     "paths": {
         "/api/": {},
-        "/api/v1/register": {
-            "post": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Регистрация юзера",
-                "operationId": "c01deea8cbf7025911d48f918fe7dcc8",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "phone": {
-                                        "type": "string",
-                                        "example": "79161234567"
-                                    },
-                                    "onboarding_id": {
-                                        "type": "integer",
-                                        "example": 23989484565138245
-                                    },
-                                    "phone_code": {
-                                        "type": "integer",
-                                        "example": 123456
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "access_token": {
-                                            "type": "string",
-                                            "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
-                                        },
-                                        "refresh_token": {
-                                            "type": "string",
-                                            "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/login": {
             "post": {
                 "tags": [
@@ -123,16 +69,34 @@
                             "schema": {
                                 "properties": {
                                     "phone": {
+                                        "description": "Телефон юзера",
                                         "type": "string",
-                                        "example": "79161234567"
+                                        "example": "79161234567",
+                                        "nullable": false
                                     },
                                     "password": {
+                                        "description": "Пароль юзера",
                                         "type": "string",
-                                        "example": "12345678"
+                                        "example": "1234567s",
+                                        "nullable": false
                                     },
                                     "name": {
+                                        "description": "Имя юзера",
                                         "type": "string",
-                                        "example": "Some name"
+                                        "default": "Some name",
+                                        "example": "Some name",
+                                        "nullable": true
+                                    },
+                                    "role": {
+                                        "description": "Роль юзера",
+                                        "type": "string",
+                                        "default": "client",
+                                        "enum": [
+                                            "client",
+                                            "driver"
+                                        ],
+                                        "example": "driver",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -183,7 +147,7 @@
                     "User"
                 ],
                 "summary": "Обновление токенов юзера",
-                "operationId": "365e1dd513ef50a1350da7fbc320ea76",
+                "operationId": "fdbde83cf0f00f614259650ce60a3108",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -213,6 +177,60 @@
                                         "refresh_token": {
                                             "type": "string",
                                             "example": "8|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Регистрация юзера",
+                "operationId": "c7504d2d859b861bf628eb0f32f697c7",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "79161234567"
+                                    },
+                                    "onboarding_id": {
+                                        "type": "integer",
+                                        "example": 23989484565138245
+                                    },
+                                    "phone_code": {
+                                        "type": "integer",
+                                        "example": 123456
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        },
+                                        "refresh_token": {
+                                            "type": "string",
+                                            "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
                                         }
                                     },
                                     "type": "object"
