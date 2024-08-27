@@ -65,7 +65,7 @@ class RegisterUserController extends Controller
         if ($onboardingUser['phone_code'] != $data['phone_code']) {
             return response()->json([
                 'message' => 'Wrong phone code'
-            ], 400);
+            ], 404);
         }
 
         try {

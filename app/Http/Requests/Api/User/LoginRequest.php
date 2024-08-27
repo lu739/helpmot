@@ -14,7 +14,7 @@ class LoginRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'digits:11', 'exists:users,phone'],
+            'phone' => ['required', 'digits:11'],
             'password' => ['required'],
         ];
     }
