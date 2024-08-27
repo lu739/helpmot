@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\LoginRequest;
+use App\Http\Resources\User\UserResource;
 use App\UseCases\User\GenerateTokens\GenerateTokensUserUseCase;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,15 +50,14 @@ class LoginUserController extends Controller
         ]);
 
         if (!$auth) {
-            return response()->json([
-                'message' => 'Неверный телефон или пароль'
-            ], 401);
+            return responseFailed(401, __('exceptions.wrong_cridentials'));
         }
 
         $user = Auth::guard('web')->user();
         $tokens = $this->generateTokensUserUseCase->handle($user);
 
         return response()->json([
+            'user' => UserResource::make($user)->resolve(),
             'accessToken' => $tokens['accessToken'],
             'refreshToken' => $tokens['refreshToken'],
         ]);
