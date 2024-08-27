@@ -36,11 +36,11 @@ class UserFactory extends Factory
 
     private function generateUniqueNumericId()
     {
-        $randomNumber = mt_rand(10000000000000000, 99999999999999999);
+        $randomNumber = mt_rand(1000000, 99999999);
 
         // Проверка уникальности (рекурсивный вызов, если не уникально)
         while (User::where('id', $randomNumber)->exists()) {
-            $randomNumber = mt_rand(10000000000000000, 99999999999999999);
+            $randomNumber = mt_rand(1000000, 99999999);
         }
 
         return $randomNumber;

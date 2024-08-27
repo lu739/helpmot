@@ -58,7 +58,6 @@ class OnboardingUserController extends Controller
             DB::beginTransaction();
 
             $createOnboardingUserDto = (new CreateOnboardingUserDto())
-                ->setId(Str::uuid()->toString())
                 ->setName($data['name'] ?? 'User_' . Str::random(8))
                 ->setPhone($data['phone'])
                 ->setPhoneСode(random_int(100000, 999999))
@@ -74,7 +73,7 @@ class OnboardingUserController extends Controller
                     [
                         'phone' => $createOnboardingUserDto->getPhone(),
                         'sender' => 'SMS DUCKOHT',
-                        'clientId' => $createOnboardingUserDto->getId(),
+                        'clientId' => $user->id,
                         'text' => 'Код подтверждения ' . $createOnboardingUserDto->getPhoneСode() . '. Ваш "HelpMot"',
                     ],
                 ],

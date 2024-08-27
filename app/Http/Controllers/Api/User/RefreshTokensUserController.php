@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\UserResource;
 use App\UseCases\User\GenerateTokens\GenerateTokensUserUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ use Illuminate\Support\Facades\Auth;
  *     )
  * )
  */
-class RefreshTofensUserController extends Controller
+class RefreshTokensUserController extends Controller
 {
     public function __construct(
         private readonly GenerateTokensUserUseCase $generateTokensUserUseCase,
@@ -46,7 +47,9 @@ class RefreshTofensUserController extends Controller
         $tokens = $this->generateTokensUserUseCase->handle($user);
 
         return response()->json([
+            'user' => UserResource::make($user)->resolve(),
             'accessToken' => $tokens['accessToken'],
+            'accessTokenExpires' => $tokens['accessTokenExpires'],
             'refreshToken' => $tokens['refreshToken'],
         ]);
     }

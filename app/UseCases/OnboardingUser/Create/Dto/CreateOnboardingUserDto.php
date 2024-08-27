@@ -8,7 +8,7 @@ use App\Enum\UserRole;
 
 class CreateOnboardingUserDto
 {
-    private string $id;
+    private ?int $id;
     private string $userId;
     private ?string $name;
     private string $phone;
@@ -19,12 +19,12 @@ class CreateOnboardingUserDto
 
 
 
-    public function getId(): string
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(string $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;

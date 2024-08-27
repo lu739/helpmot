@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->id()->comment('id водителя');
-            $table->foreignId('user_id')->constrained(\App\Models\User::class);
+            $table->foreignIdFor(\App\Models\User::class);
             $table->tinyInteger('is_activate')->default(0)->comment('он активный?');
             $table->json('location_activate')->nullable()->comment('его локация (широта и долгота)');
             $table->timestamps();

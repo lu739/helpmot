@@ -22,7 +22,7 @@ class UniquePhoneRole implements ValidationRule
             ->exists();
 
         if ($exists) {
-            $fail('The combination of phone and role has already been taken.');
+            $fail(__('exceptions.user_already_exists'));
         }
     }
 }

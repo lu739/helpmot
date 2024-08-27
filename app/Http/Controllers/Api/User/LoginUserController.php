@@ -59,6 +59,7 @@ class LoginUserController extends Controller
         return response()->json([
             'user' => UserResource::make($user)->resolve(),
             'accessToken' => $tokens['accessToken'],
+            'accessTokenExpires' => $tokens['accessTokenExpires'],
             'refreshToken' => $tokens['refreshToken'],
         ]);
     }

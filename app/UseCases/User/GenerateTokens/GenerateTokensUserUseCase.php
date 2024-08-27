@@ -16,6 +16,7 @@ class GenerateTokensUserUseCase {
 
         return [
             'accessToken' => $accessToken->plainTextToken,
+            'accessTokenExpires' => $atExpireTime->format('Y-m-d H:i:s'),
             'refreshToken' => $refreshToken->plainTextToken,
         ];
     }
