@@ -9,7 +9,6 @@ class CreateUserUseCase {
     public function handle(CreateUserDto $createUserDto): User
     {
         $user = new User();
-        $user->id = $createUserDto->getId();
         $user->phone = $createUserDto->getPhone();
         $user->role = $createUserDto->getRole();
         $user->name = $createUserDto->getName();

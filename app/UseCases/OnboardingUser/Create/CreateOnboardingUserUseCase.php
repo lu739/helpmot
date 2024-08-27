@@ -10,7 +10,6 @@ class CreateOnboardingUserUseCase {
     public function handle(CreateOnboardingUserDto $createOnboardingUserDto): OnboardingUser
     {
         $onboardingUser = new OnboardingUser();
-        $onboardingUser->id = $createOnboardingUserDto->getId();
         $onboardingUser->phone = $createOnboardingUserDto->getPhone();
         $onboardingUser->role = $createOnboardingUserDto->getRole();
         $onboardingUser->name = $createOnboardingUserDto->getName();

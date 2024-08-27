@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api\User;
 use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\RegisterRequest;
+use App\Http\Resources\User\UserResource;
 use App\Models\OnboardingUser;
 use App\UseCases\User\Create\CreateUserUseCase;
 use App\UseCases\User\Create\Dto\CreateUserDto;
 use App\UseCases\User\GenerateTokens\GenerateTokensUserUseCase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 
 /**
@@ -65,13 +65,12 @@ class RegisterUserController extends Controller
         if ($onboardingUser['phone_code'] != $data['phone_code']) {
             return response()->json([
                 'message' => 'Wrong phone code'
-            ], 400);
+            ], 404);
         }
 
         try {
             DB::beginTransaction();
             $createUserDto = (new CreateUserDto())
-                ->setId(Str::uuid()->toString())
                 ->setPhone($data['phone'])
                 ->setName($onboardingUser['name'])
                 ->setPassword($onboardingUser['password'])
@@ -88,7 +87,9 @@ class RegisterUserController extends Controller
             $tokens = $this->generateTokensUserUseCase->handle($user);
 
             return response()->json([
+                'user' => UserResource::make($user)->resolve(),
                 'accessToken' => $tokens['accessToken'],
+                'accessTokenExpires' => $tokens['accessTokenExpires'],
                 'refreshToken' => $tokens['refreshToken'],
             ]);
         } catch (\Exception $exception) {

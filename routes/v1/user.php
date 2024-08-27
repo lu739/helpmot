@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('/login', \App\Http\Controllers\Api\User\LoginUserController::class)
         ->name('login');
 
-    Route::post('/refresh-token', \App\Http\Controllers\Api\User\RefreshTofensUserController::class)
+    Route::post('/refresh-token', \App\Http\Controllers\Api\User\RefreshTokensUserController::class)
         ->middleware('auth:sanctum')
         ->name('refresh');
 
