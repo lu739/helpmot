@@ -9,6 +9,11 @@ class Driver extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+      'location_activate',
+      'is_activate',
+    ];
+
     public function orders() {
         return $this->hasMany(Order::class);
     }
