@@ -85,7 +85,7 @@ class OnboardingUserController extends Controller
         }
 
         $response = $this->confirmSmsService->setOnboardingUser($onboardingUser)->sendSmsToOnboardingUser();
-dd($response->json());
+
         if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
             return response()->json([
                 'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
