@@ -92,7 +92,7 @@ class OnboardingUserController extends Controller
             ]);
         } else {
             return response()->json([
-                'message' => $response->json()['description'], // ToDO тут может лучше сделать сообщение, что нет связи с сервисом СМС?
+                'message' => __('exceptions.sms_server_error') . $response->json()['description'],
             ], 500);
         }
     }

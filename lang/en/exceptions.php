@@ -7,4 +7,5 @@ return [
     'no_auth' => 'Unauthorized',
     'wrong_cridentials' => 'Wrong cridentials',
     'user_already_exists' => 'User already exists',
+    'sms_server_error' => 'Sms-service is unavailable',
 ];
