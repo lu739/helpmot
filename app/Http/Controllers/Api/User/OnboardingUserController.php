@@ -92,7 +92,7 @@ class OnboardingUserController extends Controller
             ]);
         } else {
             return response()->json([
-                'message' => __('exceptions.sms_server_error') . $response->json()['description'],
+                'message' => __('exceptions.sms_server_error') . ': ' . $response->json()['description'] ?? 'Unknown error' . ' (status: ' . $response->json()['status'] ?? 'Unknown status' . ')',
             ], 500);
         }
     }
