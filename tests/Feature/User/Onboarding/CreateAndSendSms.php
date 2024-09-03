@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Onboarding;
+namespace Tests\Feature\User\Onboarding;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -9,8 +9,10 @@ use Tests\TestCase;
 class CreateAndSendSms extends TestCase
 {
     use RefreshDatabase;
-
-    public function test_user_create_and_send_sms(): void
+    /**
+     * A basic feature test example.
+     */
+    public function test_create_and_send_sms(): void
     {
         Http::fake([
             'sms-service-url' => Http::response(['status' => 'ok'], 200),
