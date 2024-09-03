@@ -10,6 +10,7 @@ use App\Models\OnboardingUser;
 use App\UseCases\User\Create\CreateUserUseCase;
 use App\UseCases\User\Create\Dto\CreateUserDto;
 use App\UseCases\User\GenerateTokens\GenerateTokensUserUseCase;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -59,13 +60,19 @@ class RegisterUserController extends Controller
 
         if (!$onboardingUser) {
             return response()->json([
-                'message' => 'Onboarding user not found'
+                'message' => __('exceptions.onboarding_user_found_error')
             ], 404);
         }
         if ($onboardingUser['phone_code'] != $data['phone_code']) {
             return response()->json([
-                'message' => 'Wrong phone code'
+                'message' => __('exceptions.phone_code_error')
             ], 404);
+        }
+
+        if (Carbon::parse($onboardingUser['phone_code_datetime'])->greaterThanOrEqualTo(Carbon::now()->subDays(3))) {
+            return response()->json([
+                'message' => __('exceptions.phone_code_expired_error')
+            ], 400);
         }
 
         try {

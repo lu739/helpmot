@@ -21,7 +21,7 @@ class CreateUserDto
         return $this->phoneVerified;
     }
 
-    public function setPhoneVerified(?string $phoneVerified): CreateUserDto
+    public function setPhoneVerified(?string $phoneVerified): self
     {
         $this->phoneVerified = $phoneVerified;
         return $this;

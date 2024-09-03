@@ -179,6 +179,7 @@ return [
             'password_required' => 'Password is required',
             'password_min' => 'Password should have at least 8 characters',
             'password_regex' => 'Password should have at least one letter and one number',
+            'phone_exists' => 'Phone is not found',
         ],
     ],
 

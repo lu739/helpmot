@@ -2,31 +2,27 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\OnboardingRequest;
+use App\Http\Requests\Api\User\RefreshPasswordRequest;
 use App\Http\Resources\OnboardingUser\OnboardingClientResource;
-use App\Models\OnboardingUser;
+use App\Models\User;
 use App\Services\ConfirmSms\ConfirmSmsService;
-use App\UseCases\OnboardingUser\Create\CreateOnboardingUserUseCase;
-use App\UseCases\OnboardingUser\Create\Dto\CreateOnboardingUserDto;
+use App\UseCases\User\ForgetPassword\Dto\ForgetPasswordUserDto;
+use App\UseCases\User\ForgetPassword\ForgetPasswordUserUseCase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 
 /**
  * @OA\Post (
- *     path="/api/v1/onboarding",
- *     summary="Онбординг юзера",
+ *     path="/api/v1/refresh-password",
+ *     summary="Смена пароля юзера",
  *     tags={"User"},
  *     @OA\RequestBody(
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  @OA\Property(property="phone", type="string", example="79161234567", description="Телефон юзера", nullable=false),
- *                  @OA\Property(property="password", type="string", example="1234567s", description="Пароль юзера", nullable=false),
- *                  @OA\Property(property="name", type="string", example="Some name", default="Some name", description="Имя юзера", nullable=true),
- *                  @OA\Property(property="role", type="string", example="driver", enum={"client", "driver"}, default="client", description="Роль юзера", nullable=true),
  *             )
  *         )
  *     ),
@@ -36,43 +32,38 @@ use Illuminate\Support\Str;
  *         @OA\JsonContent(
  *              @OA\Property(property="user", type="object",
  *                  @OA\Property(property="id", type="string", example="15735744919122398"),
- *                  @OA\Property(property="name", type="string", example="Some name"),
  *                  @OA\Property(property="phone", type="string", example="79161234567"),
- *                  @OA\Property(property="role", type="string", example="client"),
  *              ),
  *         )
  *     )
  * )
  */
-class OnboardingUserController extends Controller
+class RefreshPasswordUserController extends Controller
 {
     public function __construct(
-        private readonly CreateOnboardingUserUseCase $createOnboardingUserUseCase,
-        private readonly ConfirmSmsService $confirmSmsService,
+        private readonly ForgetPasswordUserUseCase $sendPhoneCodeUserUseCase,
+        private readonly ConfirmSmsService         $confirmSmsService,
     )
     {
     }
 
-    public function __invoke(OnboardingRequest $request)
+    public function __invoke(RefreshPasswordRequest $request)
     {
         $data = $request->validated();
 
-        $onboardingUser = OnboardingUser::query()
+        $user = User::query()
             ->where('phone', $data['phone'])
             ->first();
 
-        if (!$onboardingUser) {
+        if ($user) {
             try {
                 DB::beginTransaction();
 
-                $createOnboardingUserDto = (new CreateOnboardingUserDto())
-                    ->setName($data['name'] ?? 'User_' . Str::random(8))
+                $sendPhoneCodeUserDto = (new ForgetPasswordUserDto())
                     ->setPhone($data['phone'])
                     ->setPhoneCode(random_int(100000, 999999))
-                    ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
-                    ->setPassword(bcrypt($data['password']))
-                    ->setRole(UserRole::CLIENT);
-                $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
+                    ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'));
+                $user = $this->sendPhoneCodeUserUseCase->handle($sendPhoneCodeUserDto);
 
                 DB::commit();
             } catch (\Exception $exception) {
@@ -84,17 +75,11 @@ class OnboardingUserController extends Controller
             }
         }
 
-        if (app()->environment('testing')) {
-            return response()->json([
-                'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
-            ]);
-        }
-
-        $response = $this->confirmSmsService->setSmsUser($onboardingUser)->sendSmsToUser();
+        $response = $this->confirmSmsService->setSmsUser($user)->sendSmsToUser();
 
         if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
             return response()->json([
-                'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
+                'user' => OnboardingClientResource::make($user)->resolve(),
             ]);
         } else {
             $message = __('exceptions.sms_server_error') .

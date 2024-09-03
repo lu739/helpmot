@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('phone')->comment('телефон');
             $table->string('password')->comment('хешированнный пароль');
             $table->integer('phone_code')->nullable()->comment('код из смс для подтверждения телефона');
-            $table->foreignIdFor(\App\Models\User::class)->nullable()->comment('id user в случае успешной регистрации');
             $table->timestamp('phone_code_datetime')->nullable()->comment('время отправки кода из смс для подтверждения телефона');
+            $table->foreignIdFor(\App\Models\User::class)->nullable()->comment('id user в случае успешной регистрации');
             $table->timestamps();
         });
     }

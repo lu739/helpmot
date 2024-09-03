@@ -2,29 +2,29 @@
 
 namespace App\Services\ConfirmSms;
 
-use App\Models\OnboardingUser;
+use App\Services\ConfirmSms\Interfaces\SmsUserInterface;
 use Illuminate\Support\Facades\Http;
 
 class ConfirmSmsService
 {
-    public OnboardingUser $onboardingUser;
+    public SmsUserInterface $smsUser;
 
-    public function setOnboardingUser(OnboardingUser $onboardingUser): ConfirmSmsService
+    public function setSmsUser(SmsUserInterface $smsUser): ConfirmSmsService
     {
-        $this->onboardingUser = $onboardingUser;
+        $this->smsUser = $smsUser;
 
         return $this;
     }
 
-    public function sendSmsToOnboardingUser()
+    public function sendSmsToUser()
     {
         $data = [
             'messages' => [
                 [
-                    'phone' => $this->onboardingUser->phone,
+                    'phone' => $this->smsUser->getPhone(),
                     'sender' => 'SMS DUCKOHT',
-                    'clientId' => $this->onboardingUser->id,
-                    'text' => 'Код подтверждения ' . $this->onboardingUser->phone_code . '. Ваш "HelpMot"',
+                    'clientId' => $this->smsUser->getId(),
+                    'text' => 'Код подтверждения ' . $this->smsUser->getPhoneCode() . '. Ваш "HelpMot"',
                 ],
             ],
             'login' => env('SMS_LOGIN'),
