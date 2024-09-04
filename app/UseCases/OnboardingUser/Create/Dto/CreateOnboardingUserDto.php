@@ -14,9 +14,8 @@ class CreateOnboardingUserDto
     private string $phone;
     private UserRole $role;
     private string $password;
-    private ?int $phoneСode;
-    private ?string $phoneСodeDatetime;
-
+    private ?int $phoneCode;
+    private ?string $phoneCodeDatetime;
 
 
     public function getId(): ?int
@@ -82,25 +81,25 @@ class CreateOnboardingUserDto
         $this->password = $password;
         return $this;
     }
-    public function getPhoneСodeDatetime(): ?string
+    public function getPhoneCodeDatetime(): ?string
     {
-        return $this->phoneСodeDatetime;
+        return $this->phoneCodeDatetime;
     }
 
-    public function setPhoneСodeDatetime(?string $phoneСodeDatetime): self
+    public function setPhoneCodeDatetime(?string $phoneCodeDatetime): self
     {
-        $this->phoneСodeDatetime = $phoneСodeDatetime;
+        $this->phoneCodeDatetime = $phoneCodeDatetime;
         return $this;
     }
 
-    public function getPhoneСode(): ?int
+    public function getPhoneCode(): ?int
     {
-        return $this->phoneСode;
+        return $this->phoneCode;
     }
 
-    public function setPhoneСode(?int $phoneСode): self
+    public function setPhoneCode(?int $phoneCode): self
     {
-        $this->phoneСode = $phoneСode;
+        $this->phoneCode = $phoneCode;
         return $this;
     }
 }

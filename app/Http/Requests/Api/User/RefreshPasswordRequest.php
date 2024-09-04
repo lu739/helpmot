@@ -4,23 +4,11 @@ namespace App\Http\Requests\Api\User;
 
 use App\Enum\UserRole;
 use App\Http\Requests\Api\ApiRequest;
-use App\Models\OnboardingUser;
-use App\Rules\User\UniquePhoneRole;
+use App\Rules\User\CheckExistsPhoneRole;
 use Illuminate\Validation\Rules\Enum;
 
-class RegisterRequest extends ApiRequest
+class RefreshPasswordRequest extends ApiRequest
 {
-    public function prepareForValidation(): void
-    {
-        $onboardingUser = OnboardingUser::query()
-            ->where('phone', $this->phone)
-            ->where('id', $this->onboarding_id)
-            ->first();
-
-        $this->merge([
-            'role'      => $onboardingUser->role,
-        ]);
-    }
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,10 +17,9 @@ class RegisterRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'digits:11', new UniquePhoneRole($this->role)],
-            'onboarding_id' => ['required', 'integer', 'exists:onboarding_users,id'],
-            'phone_code' => ['required', 'digits:6'],
             'role' => ['required', new Enum(UserRole::class)],
+            'phone' => ['required', 'digits:11',  'exists:users,phone', new CheckExistsPhoneRole($this->role)],
+            'phone_code' => ['required', 'digits:6'],
         ];
     }
 
@@ -41,6 +28,7 @@ class RegisterRequest extends ApiRequest
         return [
             'phone.required' => __('validation.custom.attribute-name.phone_required'),
             'phone.digits' => __('validation.custom.attribute-name.phone_format'),
+            'phone.exists' => __('validation.custom.attribute-name.phone_exists'),
             'phone_code.required' => __('validation.custom.attribute-name.phone_code_required'),
             'phone_code.digits' => __('validation.custom.attribute-name.phone_code_format'),
             'role.required' => __('validation.custom.attribute-name.role_required'),

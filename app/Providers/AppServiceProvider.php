@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
 
             // Токен выдачи нового токена
             if ($abilities->first() === TokenAbility::ISSUE_ACCESS_TOKEN->value) {
-                return $token->expires_at && $token->expires_at->isFuture() && $isValid && $routeName === 'refresh';
+                return $token->expires_at && $token->expires_at->isFuture() && $isValid && $routeName === 'refresh_tokens';
             }
             // Токен доступа к API
             if ($abilities->first() === TokenAbility::ACCESS_API->value) {
@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         };
 
         Sanctum::$accessTokenRetrievalCallback = function ($request) {
-            if (!$request->routeIs('refresh')) {
+            if (!$request->routeIs('refresh_tokens')) {
                 return str_replace('Bearer ', '', $request->headers->get('Authorization'));
             }
 

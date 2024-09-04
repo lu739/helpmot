@@ -68,8 +68,8 @@ class OnboardingUserController extends Controller
                 $createOnboardingUserDto = (new CreateOnboardingUserDto())
                     ->setName($data['name'] ?? 'User_' . Str::random(8))
                     ->setPhone($data['phone'])
-                    ->setPhoneСode(random_int(100000, 999999))
-                    ->setPhoneСodeDatetime(now()->format('Y-m-d H:i:s'))
+                    ->setPhoneCode(random_int(100000, 999999))
+                    ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
                     ->setPassword(bcrypt($data['password']))
                     ->setRole(UserRole::CLIENT);
                 $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
@@ -84,7 +84,13 @@ class OnboardingUserController extends Controller
             }
         }
 
-        $response = $this->confirmSmsService->setOnboardingUser($onboardingUser)->sendSmsToOnboardingUser();
+        if (app()->environment('testing')) {
+            return response()->json([
+                'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
+            ]);
+        }
+
+        $response = $this->confirmSmsService->setSmsUser($onboardingUser)->sendSmsToUser();
 
         if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
             return response()->json([

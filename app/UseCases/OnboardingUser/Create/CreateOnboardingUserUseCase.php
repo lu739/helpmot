@@ -14,8 +14,8 @@ class CreateOnboardingUserUseCase {
         $onboardingUser->role = $createOnboardingUserDto->getRole();
         $onboardingUser->name = $createOnboardingUserDto->getName();
         $onboardingUser->password = $createOnboardingUserDto->getPassword();
-        $onboardingUser->phone_code = $createOnboardingUserDto->getPhoneСode();
-        $onboardingUser->phone_code_datetime = $createOnboardingUserDto->getPhoneСodeDatetime();
+        $onboardingUser->phone_code = $createOnboardingUserDto->getPhoneCode();
+        $onboardingUser->phone_code_datetime = $createOnboardingUserDto->getPhoneCodeDatetime() ?? now()->format('Y-m-d H:i:s');
 
         $onboardingUser->save();
 

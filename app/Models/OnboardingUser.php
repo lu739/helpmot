@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Services\ConfirmSms\Interfaces\SmsUserInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class OnboardingUser extends Model
+class OnboardingUser extends Model implements SmsUserInterface
 {
     use HasFactory, Notifiable;
 
@@ -62,5 +63,18 @@ class OnboardingUser extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+    public function getPhoneCode(): int
+    {
+        return $this->phone_code;
     }
 }
