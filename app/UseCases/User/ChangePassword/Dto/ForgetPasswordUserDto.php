@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UseCases\User\ForgetPassword\Dto;
+namespace App\UseCases\User\ChangePassword\Dto;
 
 use App\Enum\UserRole;
 
@@ -13,6 +13,19 @@ class ForgetPasswordUserDto
     private string $newPassword;
     private ?int $phoneCode;
     private ?string $phoneCodeDatetime;
+    private UserRole $role;
+
+
+    public function getRole(): UserRole
+    {
+        return $this->role;
+    }
+
+    public function setRole(UserRole $role): self
+    {
+        $this->role = $role;
+        return $this;
+    }
 
     public function getPhoneCodeDatetime(): ?string
     {

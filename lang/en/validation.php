@@ -176,6 +176,10 @@ return [
         'attribute-name' => [
             'phone_required' => 'Phone is required',
             'phone_format' => 'Phone has wrong format',
+            'role_required' => 'Role is required',
+            'role_enum' => 'Role does not exists',
+            'phone_code_required' => 'Phone code is required',
+            'phone_code_format' => 'Phone code has wrong format',
             'password_required' => 'Password is required',
             'password_min' => 'Password should have at least 8 characters',
             'password_regex' => 'Password should have at least one letter and one number',

@@ -35,4 +35,16 @@ class RegisterRequest extends ApiRequest
             'role' => ['required', new Enum(UserRole::class)],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'phone.required' => __('validation.custom.attribute-name.phone_required'),
+            'phone.digits' => __('validation.custom.attribute-name.phone_format'),
+            'phone_code.required' => __('validation.custom.attribute-name.phone_code_required'),
+            'phone_code.digits' => __('validation.custom.attribute-name.phone_code_format'),
+            'role.required' => __('validation.custom.attribute-name.role_required'),
+            'role.enum' => __('validation.custom.attribute-name.role_enum'),
+        ];
+    }
 }

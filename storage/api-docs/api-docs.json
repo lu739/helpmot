@@ -6,6 +6,79 @@
     },
     "paths": {
         "/api/": {},
+        "/api/v1/forget-password": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Аутентификация юзера для смены пароля",
+                "operationId": "63a692384aaca50a6abb0c8a77b2d150",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "description": "Телефон юзера, которому нужна смена пароля",
+                                        "type": "string",
+                                        "example": "79161234567",
+                                        "nullable": false
+                                    },
+                                    "role": {
+                                        "description": "Роль юзера, которому нужна смена пароля",
+                                        "type": "string",
+                                        "enum": [
+                                            "client",
+                                            "driver"
+                                        ],
+                                        "example": "driver",
+                                        "nullable": false
+                                    },
+                                    "password": {
+                                        "description": "Новый пароль юзера",
+                                        "type": "string",
+                                        "example": "1234567s",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "15735744919122398"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "79161234567"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "driver"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "tags": [
@@ -128,6 +201,77 @@
                                                 "role": {
                                                     "type": "string",
                                                     "example": "client"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/refresh-password": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Смена пароля юзера",
+                "operationId": "381c785a67b4fdc4988ca377d49877f8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "description": "Телефон юзера",
+                                        "type": "string",
+                                        "example": "79161234567",
+                                        "nullable": false
+                                    },
+                                    "phone_code": {
+                                        "type": "integer",
+                                        "example": 123456
+                                    },
+                                    "role": {
+                                        "description": "Роль юзера, которому нужна смена пароля",
+                                        "type": "string",
+                                        "enum": [
+                                            "client",
+                                            "driver"
+                                        ],
+                                        "example": "driver",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "15735744919122398"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "79161234567"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "driver"
                                                 }
                                             },
                                             "type": "object"

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\User\OnboardingRequest;
 use App\Http\Requests\Api\User\RefreshPasswordRequest;
-use App\Http\Resources\OnboardingUser\OnboardingClientResource;
+use App\Http\Resources\User\UserMinifiedResource;
 use App\Models\User;
-use App\Services\ConfirmSms\ConfirmSmsService;
-use App\UseCases\User\ForgetPassword\Dto\ForgetPasswordUserDto;
-use App\UseCases\User\ForgetPassword\ForgetPasswordUserUseCase;
+use App\UseCases\User\ChangePassword\Dto\RefreshPasswordUserDto;
+use App\UseCases\User\ChangePassword\RefreshPasswordUserUseCase;
 use Illuminate\Support\Facades\DB;
 
 
@@ -23,6 +22,8 @@ use Illuminate\Support\Facades\DB;
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  @OA\Property(property="phone", type="string", example="79161234567", description="Телефон юзера", nullable=false),
+ *                  @OA\Property(property="phone_code", type="integer", example=123456),
+ *                  @OA\Property(property="role", type="string", example="driver", enum={"client", "driver"}, description="Роль юзера, которому нужна смена пароля", nullable=false),
  *             )
  *         )
  *     ),
@@ -33,6 +34,7 @@ use Illuminate\Support\Facades\DB;
  *              @OA\Property(property="user", type="object",
  *                  @OA\Property(property="id", type="string", example="15735744919122398"),
  *                  @OA\Property(property="phone", type="string", example="79161234567"),
+ *                  @OA\Property(property="role", type="string", example="driver"),
  *              ),
  *         )
  *     )
@@ -41,8 +43,7 @@ use Illuminate\Support\Facades\DB;
 class RefreshPasswordUserController extends Controller
 {
     public function __construct(
-        private readonly ForgetPasswordUserUseCase $sendPhoneCodeUserUseCase,
-        private readonly ConfirmSmsService         $confirmSmsService,
+        private readonly RefreshPasswordUserUseCase $refreshPasswordUserUseCase,
     )
     {
     }
@@ -53,42 +54,39 @@ class RefreshPasswordUserController extends Controller
 
         $user = User::query()
             ->where('phone', $data['phone'])
+            ->where('role', $data['role'])
             ->first();
 
-        if ($user) {
-            try {
-                DB::beginTransaction();
-
-                $sendPhoneCodeUserDto = (new ForgetPasswordUserDto())
-                    ->setPhone($data['phone'])
-                    ->setPhoneCode(random_int(100000, 999999))
-                    ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'));
-                $user = $this->sendPhoneCodeUserUseCase->handle($sendPhoneCodeUserDto);
-
-                DB::commit();
-            } catch (\Exception $exception) {
-                DB::rollBack();
-
-                return response()->json([
-                    'message' => $exception->getMessage()
-                ], 500);
-            }
+        if (!$user) {
+            return responseFailed(404, __('exceptions.user_not_found'));
         }
 
-        $response = $this->confirmSmsService->setSmsUser($user)->sendSmsToUser();
+        if (!$user->new_password || !$user->phone_code || !$user->phone_code_datetime) {
+            return responseFailed(404, __('exceptions.user_has_not_data'));
+        }
 
-        if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
-            return response()->json([
-                'user' => OnboardingClientResource::make($user)->resolve(),
-            ]);
-        } else {
-            $message = __('exceptions.sms_server_error') .
-                ': ' . ($response->json()['description'] ?? 'Unknown error') .
-                ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
+        try {
+            DB::beginTransaction();
+
+            $refreshPasswordUserDto = (new RefreshPasswordUserDto())
+                ->setPhone($data['phone'])
+                ->setPhoneCode(random_int(100000, 999999))
+                ->setNewPassword($user->new_password)
+                ->setRole(UserRole::from($data['role']))
+                ->setId($user->id);
+            $user = $this->refreshPasswordUserUseCase->handle($refreshPasswordUserDto);
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
 
             return response()->json([
-                'message' => $message,
+                'message' => $exception->getMessage()
             ], 500);
         }
+
+        return response()->json([
+            'user' => UserMinifiedResource::make($user)->resolve(),
+        ]);
     }
 }
