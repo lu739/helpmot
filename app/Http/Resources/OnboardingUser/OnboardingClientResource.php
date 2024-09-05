@@ -21,7 +21,7 @@ class OnboardingClientResource extends JsonResource
             'phone' => $this->phone,
             'role' => $this->role,
             'has_phone_code' => (bool) $this->phone_code,
-            'phone_code_expired_datetime' => Carbon::parse($this->phone_code_datetime)->subDays(3)->format('Y-m-d H:i:s'),
+            'phone_code_expired_datetime' => Carbon::createFromFormat('Y-m-d H:i:s', $this->phone_code_datetime)->addMinutes(3)->format('Y-m-d H:i:s'),
         ];
     }
 }

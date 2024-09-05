@@ -7,6 +7,7 @@ return [
     'driver_not_active' => 'Driver is not active',
     'no_auth' => 'Unauthorized',
     'wrong_cridentials' => 'Wrong cridentials',
+    'user_already_exists' => 'User already exists',
     'user_not_exists' => 'User not found',
     'sms_server_error' => 'Sms-service is unavailable',
     'onboarding_user_found_error' => 'Onboarding user not found',

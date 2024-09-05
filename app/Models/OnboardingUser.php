@@ -77,4 +77,9 @@ class OnboardingUser extends Model implements SmsUserInterface
     {
         return $this->phone_code;
     }
+
+    public function isCodeExpired(): bool
+    {
+        return $this->phone_code_datetime->addMinutes(3) < now();
+    }
 }
