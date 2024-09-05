@@ -32,7 +32,7 @@ class CreateOnboardingUserDto
     {
         return $this->userId;
     }
-    public function setUserId(string $userId): UpdateOnboardingUserDto
+    public function setUserId(string $userId): self
     {
         $this->userId = $userId;
         return $this;

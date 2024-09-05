@@ -102,10 +102,6 @@ class OnboardingUserController extends Controller
                 ], 500);
             }
 
-        // ToDO если юзер найден в онбордингах,
-        // то ему надо апдейтнуть данные и сгененрить новый смс код,
-        // если старый истек
-
         if (app()->environment('testing')) {
             return response()->json([
                 'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
