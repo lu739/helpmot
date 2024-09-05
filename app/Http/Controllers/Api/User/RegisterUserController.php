@@ -69,7 +69,7 @@ class RegisterUserController extends Controller
             ], 404);
         }
 
-        if (Carbon::parse($onboardingUser['phone_code_datetime'])->greaterThanOrEqualTo(Carbon::now()->subDays(3))) {
+        if ($onboardingUser->isCodeExpired()) {
             return response()->json([
                 'message' => __('exceptions.phone_code_expired_error')
             ], 400);

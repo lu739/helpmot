@@ -10,6 +10,9 @@ use App\Models\OnboardingUser;
 use App\Services\ConfirmSms\ConfirmSmsService;
 use App\UseCases\OnboardingUser\Create\CreateOnboardingUserUseCase;
 use App\UseCases\OnboardingUser\Create\Dto\CreateOnboardingUserDto;
+use App\UseCases\OnboardingUser\Update\Dto\UpdateOnboardingUserDto;
+use App\UseCases\OnboardingUser\Update\UpdateOnboardingUserUseCase;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -47,8 +50,9 @@ use Illuminate\Support\Str;
 class OnboardingUserController extends Controller
 {
     public function __construct(
+        private readonly UpdateOnboardingUserUseCase $updateOnboardingUserUseCase,
         private readonly CreateOnboardingUserUseCase $createOnboardingUserUseCase,
-        private readonly ConfirmSmsService $confirmSmsService,
+        private readonly ConfirmSmsService           $confirmSmsService,
     )
     {
     }
@@ -59,20 +63,35 @@ class OnboardingUserController extends Controller
 
         $onboardingUser = OnboardingUser::query()
             ->where('phone', $data['phone'])
+            ->where('role', UserRole::from($data['role'])->value)
             ->first();
 
-        if (!$onboardingUser) {
             try {
                 DB::beginTransaction();
 
-                $createOnboardingUserDto = (new CreateOnboardingUserDto())
-                    ->setName($data['name'] ?? 'User_' . Str::random(8))
-                    ->setPhone($data['phone'])
-                    ->setPhoneCode(random_int(100000, 999999))
-                    ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
-                    ->setPassword(bcrypt($data['password']))
-                    ->setRole(UserRole::CLIENT);
-                $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
+                if (!$onboardingUser || $onboardingUser->isCodeExpired()) {
+                    $phoneCode = random_int(100000, 999999);
+                    $phoneCodeDatetime = now()->format('Y-m-d H:i:s');
+                }
+                if (!$onboardingUser) {
+                    $createOnboardingUserDto = (new CreateOnboardingUserDto())
+                        ->setName($data['name'] ?? 'User_' . Str::random(8))
+                        ->setPhone($data['phone'])
+                        ->setPhoneCode($phoneCode)
+                        ->setPhoneCodeDatetime($phoneCodeDatetime)
+                        ->setPassword(bcrypt($data['password']))
+                        ->setRole(UserRole::CLIENT);
+                    $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
+                } else {
+                    $updateOnboardingUserDto = (new UpdateOnboardingUserDto())
+                        ->setId($onboardingUser->id)
+                        ->setName($data['name'] ?? 'User_' . Str::random(8))
+                        ->setPassword(bcrypt($data['password']))
+                        ->setPhoneCode(isset($phoneCode) ? $phoneCode : null)
+                        ->setPhoneCodeDatetime(isset($phoneCodeDatetime) ? $phoneCodeDatetime : null);
+
+                    $onboardingUser = $this->updateOnboardingUserUseCase->handle($updateOnboardingUserDto);
+                }
 
                 DB::commit();
             } catch (\Exception $exception) {
@@ -82,7 +101,6 @@ class OnboardingUserController extends Controller
                     'message' => $exception->getMessage()
                 ], 500);
             }
-        }
 
         if (app()->environment('testing')) {
             return response()->json([
@@ -90,20 +108,26 @@ class OnboardingUserController extends Controller
             ]);
         }
 
-        $response = $this->confirmSmsService->setSmsUser($onboardingUser)->sendSmsToUser();
-
-        if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
+        if (app()->environment('local')) {
             return response()->json([
                 'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
             ]);
         } else {
-            $message = __('exceptions.sms_server_error') .
-                ': ' . ($response->json()['description'] ?? 'Unknown error') .
-                ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
+            $response = $this->confirmSmsService->setSmsUser($onboardingUser)->sendSmsToUser();
 
-            return response()->json([
-                'message' => $message,
-            ], 500);
+            if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
+                return response()->json([
+                    'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
+                ]);
+            } else {
+                $message = __('exceptions.sms_server_error') .
+                    ': ' . ($response->json()['description'] ?? 'Unknown error') .
+                    ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
+
+                return response()->json([
+                    'message' => $message,
+                ], 500);
+            }
         }
     }
 }

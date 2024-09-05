@@ -129,6 +129,25 @@
                 }
             }
         },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Логаут юзера",
+                "operationId": "25b2f759a67d8c0d08656187ea107a6a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/api/v1/onboarding": {
             "post": {
                 "tags": [
