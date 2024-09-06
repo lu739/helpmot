@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\ConfirmSms\Interfaces\SmsUserInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -80,6 +81,6 @@ class OnboardingUser extends Model implements SmsUserInterface
 
     public function isCodeExpired(): bool
     {
-        return $this->phone_code_datetime->addMinutes(3) < now();
+        return Carbon::createFromFormat('Y-m-d H:i:s', $this->phone_code_datetime)->addMinutes(3) < now();
     }
 }

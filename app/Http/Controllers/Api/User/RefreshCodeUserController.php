@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\RefreshCodeUserRequest;
 use App\Http\Resources\User\UserMinifiedResource;
@@ -15,15 +14,14 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * @OA\Post (
- *     path="/api/v1/refresh-password",
- *     summary="Смена пароля юзера",
+ *     path="/api/v1/refresh-user-code",
+ *     summary="Смена смс-кода юзера",
  *     tags={"User"},
  *     @OA\RequestBody(
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  @OA\Property(property="phone", type="string", example="79161234567", description="Телефон юзера", nullable=false),
- *                  @OA\Property(property="phone_code", type="integer", example=123456),
  *                  @OA\Property(property="role", type="string", example="driver", enum={"client", "driver"}, description="Роль юзера, которому нужна смена пароля", nullable=false),
  *             )
  *         )
@@ -36,6 +34,7 @@ use Illuminate\Support\Facades\DB;
  *                  @OA\Property(property="id", type="string", example="15735744919122398"),
  *                  @OA\Property(property="phone", type="string", example="79161234567"),
  *                  @OA\Property(property="role", type="string", example="driver"),
+ *                  @OA\Property(property="phone_code_expired_datetime", type="string", example="2024-09-06 20:31:27"),
  *              ),
  *         )
  *     )
