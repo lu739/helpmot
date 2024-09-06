@@ -83,20 +83,26 @@ class ForgetPasswordUserController extends Controller
             ], 500);
         }
 
-        $response = $this->confirmSmsService->setSmsUser($user)->sendSmsToUser();
-
-        if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
+        if (app()->environment('local')) {
             return response()->json([
                 'user' => UserMinifiedResource::make($user)->resolve(),
             ]);
         } else {
-            $message = __('exceptions.sms_server_error') .
-                ': ' . ($response->json()['description'] ?? 'Unknown error') .
-                ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
+            $response = $this->confirmSmsService->setSmsUser($user)->sendSmsToUser();
 
-            return response()->json([
-                'message' => $message,
-            ], 500);
+            if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
+                return response()->json([
+                    'user' => UserMinifiedResource::make($user)->resolve(),
+                ]);
+            } else {
+                $message = __('exceptions.sms_server_error') .
+                    ': ' . ($response->json()['description'] ?? 'Unknown error') .
+                    ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
+
+                return response()->json([
+                    'message' => $message,
+                ], 500);
+            }
         }
     }
 }
