@@ -9,6 +9,7 @@ return [
     'wrong_cridentials' => 'Wrong cridentials',
     'user_already_exists' => 'User already exists',
     'user_not_exists' => 'User not found',
+    'user_code_not_expired' => 'User phone code not expired',
     'sms_server_error' => 'Sms-service is unavailable',
     'onboarding_user_found_error' => 'Onboarding user not found',
     'phone_code_error' => 'Sms code is invalid',
