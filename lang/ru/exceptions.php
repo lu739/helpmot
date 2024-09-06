@@ -9,6 +9,7 @@ return [
     'wrong_cridentials' => 'Неверный телефон или пароль',
     'user_already_exists' => 'Пользователь уже зарегистрирован',
     'user_not_exists' => 'Пользователь не найден',
+    'user_code_not_expired' => 'Смс-код юзера не истек',
     'sms_server_error' => 'Нет связи с сервисом СМС',
     'onboarding_user_found_error' => 'Онбординг юзер не найден',
     'phone_code_error' => 'Неверный код из смс',

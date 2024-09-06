@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
         ->middleware('auth:sanctum')
         ->name('refresh_tokens');
 
+    Route::post('/refresh-user-code', \App\Http\Controllers\Api\User\RefreshCodeUserController::class)
+        ->name('refresh_user_code');
+
     Route::post('/forget-password', \App\Http\Controllers\Api\User\ForgetPasswordUserController::class)
         ->name('forget_password');
     Route::post('/refresh-password', \App\Http\Controllers\Api\User\RefreshPasswordUserController::class)

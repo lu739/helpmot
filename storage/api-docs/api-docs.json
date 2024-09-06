@@ -233,6 +233,77 @@
                 }
             }
         },
+        "/api/v1/refresh-user-code": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Смена смс-кода юзера",
+                "operationId": "a8900ec6010ded7882aa5d28878f01a5",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "phone": {
+                                        "description": "Телефон юзера",
+                                        "type": "string",
+                                        "example": "79161234567",
+                                        "nullable": false
+                                    },
+                                    "role": {
+                                        "description": "Роль юзера, которому нужна смена пароля",
+                                        "type": "string",
+                                        "enum": [
+                                            "client",
+                                            "driver"
+                                        ],
+                                        "example": "driver",
+                                        "nullable": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": "15735744919122398"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "79161234567"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "driver"
+                                                },
+                                                "phone_code_expired_datetime": {
+                                                    "type": "string",
+                                                    "example": "2024-09-06 20:31:27"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/refresh-password": {
             "post": {
                 "tags": [
