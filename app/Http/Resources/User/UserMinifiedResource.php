@@ -19,7 +19,7 @@ class UserMinifiedResource extends JsonResource
             'id' => $this->id,
             'phone' => $this->phone,
             'role' => $this->role,
-            'phone_code_expired_datetime' => Carbon::createFromFormat('Y-m-d H:i:s', $this->phone_code_datetime)->addMinutes(3)->format('Y-m-d H:i:s'),
+            'phone_code_expired_datetime' => $this->phone_code_datetime ? Carbon::createFromFormat('Y-m-d H:i:s', $this->phone_code_datetime)->addMinutes(3)->format('Y-m-d H:i:s') : null,
         ];
     }
 }

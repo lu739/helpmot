@@ -59,20 +59,14 @@ class RegisterUserController extends Controller
             ->first();
 
         if (!$onboardingUser) {
-            return response()->json([
-                'message' => __('exceptions.onboarding_user_found_error')
-            ], 404);
+            return responseFailed(404, __('exceptions.onboarding_user_found_error'));
         }
         if ($onboardingUser['phone_code'] != $data['phone_code']) {
-            return response()->json([
-                'message' => __('exceptions.phone_code_error')
-            ], 404);
+            return responseFailed(404, __('exceptions.phone_code_error'));
         }
 
         if ($onboardingUser->isCodeExpired()) {
-            return response()->json([
-                'message' => __('exceptions.phone_code_expired_error')
-            ], 400);
+            return responseFailed(404, __('exceptions.phone_code_expired_error'));
         }
 
         try {
