@@ -61,7 +61,7 @@ class RefreshCodeOnboardingOUserController extends Controller
             return responseFailed(404, __('exceptions.user_not_found'));
         }
 
-        if ($onboardingUser->user()) {
+        if ($onboardingUser->user) {
             return responseFailed(403, __('exceptions.user_already_exists'));
         }
 
