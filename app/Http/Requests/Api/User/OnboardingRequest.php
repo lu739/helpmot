@@ -28,7 +28,7 @@ class OnboardingRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'digits:11',  new UniquePhoneRole($this->role)],
+            'phone' => ['required', 'digits:11', new UniquePhoneRole($this->role)],
             'role' => ['required', new Enum(UserRole::class)],
             'name' => ['nullable', 'string'],
             'password' => [
