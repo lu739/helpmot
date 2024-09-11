@@ -15,8 +15,50 @@ class OnboardingTest extends TestCase
 
     private string $phone = '79234567890';
     private string $password = 'securePassword123';
+    private string $wrongFormatPhone = '912345689';
+    private string $wrongFormatPassword = 'password';
 
-    public function test_create_and_send_sms(): void
+
+    public function test_validation_wrong_formats(): void
+    {
+        $data = [
+            'name' => 'Test User',
+            'phone' => $this->wrongFormatPhone,
+            'password' => $this->wrongFormatPassword,
+        ];
+
+        $response = $this->post(route('onboarding'), $data);
+
+        $response->assertStatus(422)
+            ->assertJsonStructure([
+                'errors' => [
+                    'phone',
+                    'password',
+                ]
+            ])
+        ;
+    }
+
+    public function test_validation_required_fields(): void
+    {
+        $data = [
+            'name' => 'Test User',
+            'phone' => '',
+            'password' => '',
+        ];
+        $response = $this->post(route('onboarding'), $data);
+
+        $response->assertStatus(422)
+            ->assertJsonStructure([
+                'errors' => [
+                    'phone',
+                    'password',
+                ]
+            ])
+        ;
+    }
+
+    public function test_create_new_onboarding_user(): void
     {
         $data = [
             'name' => 'Test User',
@@ -35,9 +77,9 @@ class OnboardingTest extends TestCase
         ]);
     }
 
-    public function test_existing_user()
+    public function test_existing_onboarding_user()
     {
-        $existingUser = OnboardingUser::create([
+        OnboardingUser::create([
             'name' => 'Existing User',
             'phone' => $this->phone,
             'password' => $this->password,
@@ -59,6 +101,7 @@ class OnboardingTest extends TestCase
 
         $this->assertDatabaseHas('onboarding_users', [
             'phone' => $this->phone,
+            'name' => $data['name'],
         ]);
     }
 }

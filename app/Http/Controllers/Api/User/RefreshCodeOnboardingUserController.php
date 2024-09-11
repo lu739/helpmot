@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\DB;
  *     )
  * )
  */
-class RefreshCodeOnboardingOUserController extends Controller
+class RefreshCodeOnboardingUserController extends Controller
 {
     public function __construct(
         private readonly RefreshPhoneCodeOnboardingUserUseCase $refreshPhoneCodeOnboardingUserUseCase,
