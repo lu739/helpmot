@@ -65,41 +65,41 @@ class OnboardingUserController extends Controller
             ->where('role', UserRole::from($data['role'])->value)
             ->first();
 
-            try {
-                DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-                if (!$onboardingUser || $onboardingUser->isCodeExpired()) {
-                    $phoneCode = random_int(100000, 999999);
-                    $phoneCodeDatetime = now()->format('Y-m-d H:i:s');
-                }
-                if (!$onboardingUser) {
-                    $createOnboardingUserDto = (new CreateOnboardingUserDto())
-                        ->setName($data['name'] ?? 'User_' . Str::random(8))
-                        ->setPhone($data['phone'])
-                        ->setPhoneCode($phoneCode)
-                        ->setPhoneCodeDatetime($phoneCodeDatetime)
-                        ->setPassword(bcrypt($data['password']))
-                        ->setRole(UserRole::CLIENT);
-                    $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
-                } else {
-                    $updateOnboardingUserDto = (new UpdateOnboardingUserDto())
-                        ->setId($onboardingUser->id)
-                        ->setName($data['name'] ?? 'User_' . Str::random(8))
-                        ->setPassword(bcrypt($data['password']))
-                        ->setPhoneCode(isset($phoneCode) ? $phoneCode : null)
-                        ->setPhoneCodeDatetime(isset($phoneCodeDatetime) ? $phoneCodeDatetime : null);
-
-                    $onboardingUser = $this->updateOnboardingUserUseCase->handle($updateOnboardingUserDto);
-                }
-
-                DB::commit();
-            } catch (\Exception $exception) {
-                DB::rollBack();
-
-                return response()->json([
-                    'message' => $exception->getMessage()
-                ], 500);
+            if (!$onboardingUser || $onboardingUser->isCodeExpired()) {
+                $phoneCode = random_int(100000, 999999);
+                $phoneCodeDatetime = now()->format('Y-m-d H:i:s');
             }
+            if (!$onboardingUser) {
+                $createOnboardingUserDto = (new CreateOnboardingUserDto())
+                    ->setName($data['name'] ?? 'User_' . Str::random(8))
+                    ->setPhone($data['phone'])
+                    ->setPhoneCode($phoneCode)
+                    ->setPhoneCodeDatetime($phoneCodeDatetime)
+                    ->setPassword(bcrypt($data['password']))
+                    ->setRole(UserRole::CLIENT);
+                $onboardingUser = $this->createOnboardingUserUseCase->handle($createOnboardingUserDto);
+            } else {
+                $updateOnboardingUserDto = (new UpdateOnboardingUserDto())
+                    ->setId($onboardingUser->id)
+                    ->setName($data['name'] ?? 'User_' . Str::random(8))
+                    ->setPassword(bcrypt($data['password']))
+                    ->setPhoneCode(isset($phoneCode) ? $phoneCode : null)
+                    ->setPhoneCodeDatetime(isset($phoneCodeDatetime) ? $phoneCodeDatetime : null);
+
+                $onboardingUser = $this->updateOnboardingUserUseCase->handle($updateOnboardingUserDto);
+            }
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 500);
+        }
 
         if (app()->environment('testing')) {
             return response()->json([

@@ -17,10 +17,13 @@ class RegisterRequest extends ApiRequest
             ->where('id', $this->onboarding_id)
             ->first();
 
-        $this->merge([
-            'role'      => $onboardingUser->role,
-        ]);
+        if ($onboardingUser) {
+            $this->merge([
+                'role' => $onboardingUser->role,
+            ]);
+        }
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -45,6 +48,7 @@ class RegisterRequest extends ApiRequest
             'phone_code.digits' => __('validation.custom.attribute-name.phone_code_format'),
             'role.required' => __('validation.custom.attribute-name.role_required'),
             'role.enum' => __('validation.custom.attribute-name.role_enum'),
+            'onboarding_id.exists' => __('exceptions.onboarding_user_found_error'),
         ];
     }
 }
