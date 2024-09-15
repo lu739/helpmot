@@ -5,7 +5,6 @@ namespace Tests\Feature\User\Onboarding;
 use App\Enum\UserRole;
 use App\Models\OnboardingUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Mockery;
 
@@ -103,5 +102,25 @@ class OnboardingTest extends TestCase
             'phone' => $this->phone,
             'name' => $data['name'],
         ]);
+    }
+
+    public function test_returns_429_too_many_requests()
+    {
+        $data = [
+            'name' => 'New User',
+            'phone' => $this->phone,
+            'password' => $this->password,
+        ];
+
+        for ($i = 0; $i < 31; $i++) {
+            $response = $this->post(route('onboarding'), $data);
+
+            if ($i < 30) {
+                $response->assertOk();
+            } else {
+                $response->assertStatus(429);
+                $response->assertJson(['message' => __('exceptions.throttle_error')]);
+            }
+        }
     }
 }

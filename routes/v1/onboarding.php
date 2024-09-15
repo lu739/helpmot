@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-    Route::post('/onboarding', \App\Http\Controllers\Api\User\OnboardingUserController::class)
-        ->name('onboarding');
+    Route::middleware('throttle:api')->group(function () {
+        Route::post('/onboarding', \App\Http\Controllers\Api\User\OnboardingUserController::class)
+            ->name('onboarding');
+    });
+
     Route::post('/register', \App\Http\Controllers\Api\User\RegisterUserController::class)
         ->name('register');
 

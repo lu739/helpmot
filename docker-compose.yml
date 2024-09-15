@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: ./docker/8.2
+            context: './vendor/laravel/sail/runtimes/8.2'
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.2/app
+        image: 'sail-8.2/app'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -24,7 +24,7 @@ services:
         depends_on:
             - pgsql
     pgsql:
-        image: postgres:latest
+        image: 'postgres:latest'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         restart: unless-stopped
@@ -49,11 +49,9 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
-
 networks:
     sail:
         driver: bridge
-
 volumes:
     sail-pgsql:
         driver: local

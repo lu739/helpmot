@@ -3,9 +3,13 @@
 namespace App\Providers;
 
 use App\Enum\TokenAbility;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +28,24 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->overrideSanctumConfigurationToSupportRefreshToken();
+
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(30)
+                ->by($request->user()?->id ?: $request->ip())
+                ->response(function () {
+                    return responseFailed(429, __('exceptions.throttle_error'));
+                });
+        });
+
+        Model::shouldBeStrict(!app()->isProduction());
+
+        DB::listen(function ($query) {
+            if ($query->time > 1000) {
+                logger()
+                    ->channel('telegram')
+                    ->debug('whenQueryingForLongerThan: ' . $query['sql']);
+            }
+        });
     }
 
     private function overrideSanctumConfigurationToSupportRefreshToken(): void

@@ -21,8 +21,10 @@ class GetDriverTest extends TestCase
         ]);
 
         $this->driver = Driver::factory()
-            ->for($user)
-            ->create(['is_activate' => true]);
+            ->create([
+                'is_activate' => true,
+                'user_id' => $user->id,
+            ]);
 
         if ($this->driver->is_activate) {
             $this->driver->update([
@@ -35,9 +37,7 @@ class GetDriverTest extends TestCase
 
         $this->actingAs($user);
     }
-    /**
-     * A basic feature test example.
-     */
+
     public function test_get_driver(): void
     {
         $response = $this->get(route('driver.show', $this->driver));
