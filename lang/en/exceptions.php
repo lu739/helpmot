@@ -14,4 +14,5 @@ return [
     'onboarding_user_found_error' => 'Onboarding user not found',
     'phone_code_error' => 'Sms code is invalid',
     'phone_code_expired_error' => 'Phone code is expired',
+    'throttle_error' => 'Too many attempts. Please try again later',
 ];

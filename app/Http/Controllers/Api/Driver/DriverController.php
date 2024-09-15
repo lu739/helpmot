@@ -27,7 +27,8 @@ class DriverController extends Controller implements HasMiddleware
     public function index()
     {
         return response()->json([
-           'data' => DriverResource::collection(Driver::all()->where('is_activate', 1)),
+           'data' => DriverResource::collection(Driver::query()->with('user')->where('is_activate', 1)
+               ->get()),
         ]);
     }
 

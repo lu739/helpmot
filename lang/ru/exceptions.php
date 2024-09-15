@@ -14,4 +14,5 @@ return [
     'onboarding_user_found_error' => 'Онбординг юзер не найден',
     'phone_code_error' => 'Неверный код из смс',
     'phone_code_expired_error' => 'Истек срок кода из смс',
+    'throttle_error' => 'Слишком много попыток. Повторите позже',
 ];

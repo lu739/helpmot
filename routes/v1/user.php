@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-    Route::post('/login', \App\Http\Controllers\Api\User\LoginUserController::class)
-        ->name('login');
+    Route::middleware('throttle:api')->group(function () {
+        Route::post('/login', \App\Http\Controllers\Api\User\LoginUserController::class)
+            ->name('login');
+    });
+
     Route::post('/logout', \App\Http\Controllers\Api\User\LogoutUserController::class)
         ->middleware('auth:sanctum')
         ->name('logout');
