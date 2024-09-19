@@ -239,7 +239,7 @@
                     "User"
                 ],
                 "summary": "Смена смс-кода юзера при онбординге",
-                "operationId": "925e0f48ec8545b3168ac14b050412cf",
+                "operationId": "b66e409f7d87569b2f12a06b6797353a",
                 "requestBody": {
                     "content": {
                         "application/json": {
