@@ -23,3 +23,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('/refresh-password', \App\Http\Controllers\Api\User\RefreshPasswordUserController::class)
         ->name('refresh_password');
 
+    Route::get('/data-user', \App\Http\Controllers\Api\User\DataUserController::class)
+        ->middleware('auth:sanctum')
+        ->name('data_user');
+
