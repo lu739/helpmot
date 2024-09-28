@@ -79,6 +79,10 @@ class User extends Authenticatable implements SmsUserInterface
         return $this->hasOne(OnboardingUser::class);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'client_id');
+    }
     public function getId(): string
     {
         return $this->id;

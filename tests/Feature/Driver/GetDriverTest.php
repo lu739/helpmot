@@ -40,7 +40,7 @@ class GetDriverTest extends TestCase
 
     public function test_get_driver(): void
     {
-        $response = $this->get(route('driver.show', $this->driver));
+        $response = $this->get(route('drivers.show', $this->driver));
 
         $response->assertOk();
         $data = $response->json('data');

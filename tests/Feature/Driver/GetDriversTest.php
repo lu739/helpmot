@@ -26,7 +26,7 @@ class GetDriversTest extends TestCase
      */
     public function test_get_drivers(): void
     {
-        $response = $this->get(route('driver.index'));
+        $response = $this->get(route('drivers.index'));
 
         $response->assertOk();
         $response->assertJsonStructure([
