@@ -27,3 +27,8 @@
 8. запустить сервер `php srtisan serve`
 9. если нужно также запустить статику `npm run dev`
 10. если отслеживать статику не нужно то `npm run build`
+
+
+# Генерация сваггер документации
+sail artisan l5-swagger:generate - локаль
+php artisan l5-swagger:generate - сервер

@@ -2,16 +2,9 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\User\RegisterRequest;
 use App\Http\Resources\User\UserResource;
-use App\Models\OnboardingUser;
-use App\UseCases\User\Create\CreateUserUseCase;
-use App\UseCases\User\Create\Dto\CreateUserDto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 
 /**
