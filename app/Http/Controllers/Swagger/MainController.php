@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
  *     title="API Docs",
  *     version="1",
  * )
+ *
  * @OA\Get (
  *     path="/api/v1/orders",
  *     summary="Данные о заказах юзера",
@@ -30,8 +31,14 @@ use App\Http\Controllers\Controller;
  *         @OA\JsonContent(
  *             @OA\Property(property="data", type="object",
  *                  @OA\Property(property="driver_id", type="integer|null", example="87091160"),
- *                  @OA\Property(property="status", type="string", example="active"),
- *                  @OA\Property(property="type", type="string", example="tow_truck"),
+ *                  @OA\Property(property="status", type="object",
+ *                      @OA\Property(property="key", type="string", example="active"),
+ *                      @OA\Property(property="value", type="string", example="Активный"),
+ *                  ),
+ *                  @OA\Property(property="type", type="object",
+ *                      @OA\Property(property="key", type="string", example="tow_truck"),
+ *                      @OA\Property(property="value", type="string", example="Эвакуатор"),
+ *                  ),
  *             ),
  *         )
  *     )
@@ -68,6 +75,7 @@ use App\Http\Controllers\Controller;
  *         )
  *     )
  * )
+ *
  * @OA\Get (
  *     path="/api/v1/drivers",
  *     summary="Данные о водителях",

@@ -16,8 +16,14 @@ class OrderMinifiedResource extends JsonResource
     {
         return [
             'driver_id' => $this->driver_id,
-            'status' => $this->status,
-            'type' => $this->type,
+            'status' => [
+                'key' => $this->status,
+                'value' => $this->status->russian(),
+            ],
+            'type' => [
+                'key' => $this->type,
+                'value' => $this->type->russian(),
+            ],
         ];
     }
 }
