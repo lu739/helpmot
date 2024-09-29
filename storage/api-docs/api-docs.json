@@ -636,12 +636,30 @@
                                                     "example": "87091160"
                                                 },
                                                 "status": {
-                                                    "type": "string",
-                                                    "example": "active"
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "example": "active"
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "example": "Активный"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 },
                                                 "type": {
-                                                    "type": "string",
-                                                    "example": "tow_truck"
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "example": "tow_truck"
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "example": "Эвакуатор"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
