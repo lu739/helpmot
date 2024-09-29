@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string('type')->default('tow_truck')->comment('Тип заказа: tow_truck (эвакуатор) в будущем будут другие');
-            $table->json('location_start')->comment('Стартовая локация заказа (широта и долгота, а также адрес текстом)');
+            $table->json('location_start')->nullable()->comment('Стартовая локация заказа (широта и долгота, а также адрес текстом)');
             $table->text('client_comment')->nullable()->comment('Комментарий клиента к заказу');
         });
     }
