@@ -31,6 +31,32 @@ use App\Http\Controllers\Controller;
  *         @OA\JsonContent(
  *             @OA\Property(property="data", type="object",
  *                  @OA\Property(property="driver_id", type="integer|null", example="87091160"),
+ *                  @OA\Property(property="status", type="string", example="active"),
+ *                  @OA\Property(property="type", type="string", example="tow_truck"),
+ *             ),
+ *         )
+ *     )
+ * )
+
+ * @OA\Get (
+ *     path="/api/v1/orders/{id}",
+ *     summary="Данные о заказе юзера",
+ *     tags={"Order"},
+ *     @OA\RequestBody(
+ *         @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  @OA\Property(property="token", type="string", example="3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"),
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="object",
+ *                  @OA\Property(property="id", type="integer", example="11"),
+ *                  @OA\Property(property="driver_id", type="integer|null", example="87091160"),
  *                  @OA\Property(property="date_start", type="string", example="2024-09-28 21:30:46"),
  *                  @OA\Property(property="status", type="string", example="active"),
  *                  @OA\Property(property="type", type="string", example="tow_truck"),

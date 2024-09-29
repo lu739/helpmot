@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests\Feature\User\Onboarding;
+namespace Tests\Feature\App\Http\Controllers\User\Onboarding;
 
 use App\Enum\UserRole;
 use App\Models\OnboardingUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Mockery;
 
 class OnboardingTest extends TestCase
 {

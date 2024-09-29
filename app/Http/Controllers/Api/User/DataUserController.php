@@ -47,6 +47,6 @@ class DataUserController extends Controller
 
         return response()->json([
             'user' => UserResource::make($user)->resolve(),
-        ], 500);
+        ], 200);
     }
 }
