@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Order;
 
+use App\Enum\OrderStatus;
+use App\Enum\OrderType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,11 +20,11 @@ class OrderMinifiedResource extends JsonResource
             'driver_id' => $this->driver_id,
             'status' => [
                 'key' => $this->status,
-                'value' => $this->status->russian(),
+                'value' => OrderStatus::from($this->status)->russian(),
             ],
             'type' => [
                 'key' => $this->type,
-                'value' => $this->type->russian(),
+                'value' => OrderType::from($this->type)->russian(),
             ],
         ];
     }
