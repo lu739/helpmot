@@ -759,6 +759,67 @@
                 }
             }
         },
+        "/api/v1/data-order-enums": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Данные статусов/типов по заказам для селектов",
+                "operationId": "450d686da541d3993f4a38639dfc40a1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "types": {
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "example": "value"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "statuses": {
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "example": "value"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/drivers": {
             "get": {
                 "tags": [
