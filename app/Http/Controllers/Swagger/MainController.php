@@ -43,6 +43,7 @@ use App\Http\Controllers\Controller;
  *         )
  *     )
  * )
+ *
  * @OA\Get (
  *     path="/api/v1/orders/{id}",
  *     summary="Данные о заказе юзера",
@@ -71,6 +72,34 @@ use App\Http\Controllers\Controller;
  *                      @OA\Property(property="lot", type="float", example="37.618423"),
  *                      @OA\Property(property="address", type="string", example="19402 Langworth Crest\nSchneidermouth, WV 51672"),
  *                  ),
+ *             ),
+ *         )
+ *     )
+ * )
+ *
+ * @OA\Get (
+ *     path="/api/v1/data-order-enums",
+ *     summary="Данные статусов/типов по заказам для селектов",
+ *     tags={"Order"},
+ *     @OA\RequestBody(
+ *         @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  @OA\Property(property="token", type="string", example="3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"),
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="OK",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="types", type="object",
+ *                       @OA\Property(property="key", type="string", example="value"),
+ *                 ),
+ *                 @OA\Property(property="statuses", type="object",
+ *                       @OA\Property(property="key", type="string", example="value"),
+ *                 ),
  *             ),
  *         )
  *     )
