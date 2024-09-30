@@ -95,10 +95,10 @@ use App\Http\Controllers\Controller;
  *         @OA\JsonContent(
  *             @OA\Property(property="data", type="object",
  *                 @OA\Property(property="types", type="object",
- *                       @OA\Property(property="key", type="string", example="value"),
+ *                       @OA\Property(property="tow_truck", type="string", example="Эвакуатор"),
  *                 ),
  *                 @OA\Property(property="statuses", type="object",
- *                       @OA\Property(property="key", type="string", example="value"),
+ *                       @OA\Property(property="active", type="string", example="Активен"),
  *                 ),
  *             ),
  *         )
