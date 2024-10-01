@@ -17,6 +17,7 @@ class OrderMinifiedResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'driver_id' => $this->driver_id,
             'status' => [
                 'key' => $this->status,

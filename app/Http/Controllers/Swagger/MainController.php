@@ -30,6 +30,7 @@ use App\Http\Controllers\Controller;
  *         description="OK",
  *         @OA\JsonContent(
  *             @OA\Property(property="data", type="object",
+ *                  @OA\Property(property="id", type="integer", example="11"),
  *                  @OA\Property(property="driver_id", type="integer|null", example="87091160"),
  *                  @OA\Property(property="status", type="object",
  *                      @OA\Property(property="key", type="string", example="active"),
