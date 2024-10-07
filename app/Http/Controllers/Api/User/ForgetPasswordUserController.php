@@ -8,8 +8,8 @@ use App\Http\Requests\Api\User\ForgetPasswordRequest;
 use App\Http\Resources\User\UserMinifiedResource;
 use App\Models\User;
 use App\Services\ConfirmSms\ConfirmSmsService;
-use App\UseCases\User\ChangePassword\Dto\ForgetPasswordUserDto;
-use App\UseCases\User\ChangePassword\ForgetPasswordUserUseCase;
+use App\Actions\User\ChangePassword\Dto\ForgetPasswordUserDto;
+use App\Actions\User\ChangePassword\ForgetPasswordUserAction;
 use Illuminate\Support\Facades\DB;
 
 
@@ -44,8 +44,8 @@ use Illuminate\Support\Facades\DB;
 class ForgetPasswordUserController extends Controller
 {
     public function __construct(
-        private readonly ForgetPasswordUserUseCase $forgetPasswordUserUseCase,
-        private readonly ConfirmSmsService         $confirmSmsService,
+        private readonly ForgetPasswordUserAction $forgetPasswordUserAction,
+        private readonly ConfirmSmsService        $confirmSmsService,
     )
     {
     }
@@ -72,7 +72,7 @@ class ForgetPasswordUserController extends Controller
                 ->setPhoneCode(random_int(100000, 999999))
                 ->setNewPassword($data['new_password'])
                 ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'));
-            $user = $this->forgetPasswordUserUseCase->handle($forgetPasswordUserDto);
+            $user = $this->forgetPasswordUserAction->handle($forgetPasswordUserDto);
 
             DB::commit();
         } catch (\Exception $exception) {

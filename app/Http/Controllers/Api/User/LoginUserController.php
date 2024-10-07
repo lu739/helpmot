@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\LoginRequest;
 use App\Http\Resources\User\UserResource;
-use App\UseCases\User\GenerateTokens\GenerateTokensUserUseCase;
+use App\Actions\User\GenerateTokens\GenerateTokensUserAction;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginUserController extends Controller
 {
     public function __construct(
-        private readonly GenerateTokensUserUseCase $generateTokensUserUseCase,
+        private readonly GenerateTokensUserAction $generateTokensUserAction,
     )
     {
     }
@@ -54,7 +54,7 @@ class LoginUserController extends Controller
         }
 
         $user = Auth::guard('web')->user();
-        $tokens = $this->generateTokensUserUseCase->handle($user);
+        $tokens = $this->generateTokensUserAction->handle($user);
 
         return response()->json([
             'user' => UserResource::make($user)->resolve(),
