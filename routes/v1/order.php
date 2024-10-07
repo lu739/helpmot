@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/orders', \App\Http\Controllers\Api\Order\OrderController::class)
     ->only(['index', 'show'])
-    // ->middleware('auth:sanctum');
     ->middleware(['auth:sanctum', CheckUserRole::class . ':' . UserRole::CLIENT->value]);
 
 Route::get('/driver/orders/active', [\App\Http\Controllers\Api\Order\Driver\OrderController::class, 'active'])
