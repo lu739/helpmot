@@ -5,7 +5,7 @@ return [
     'user_has_not_data' => 'There is not enough data to finish',
     'route_not_found' => 'Route is not found',
     'driver_not_active' => 'Driver is not active',
-    'order_does_not_belong_to_client' => 'Not enough rights to view order',
+    'order_does_not_belong_to_user' => 'Not enough rights to view order',
     'no_auth' => 'Unauthorized',
     'wrong_cridentials' => 'Wrong cridentials',
     'user_already_exists' => 'User already exists',
@@ -16,4 +16,5 @@ return [
     'phone_code_error' => 'Sms code is invalid',
     'phone_code_expired_error' => 'Phone code is expired',
     'throttle_error' => 'Too many attempts. Please try again later',
+    'forbidden_data' => 'You have no rights to access this data',
 ];
