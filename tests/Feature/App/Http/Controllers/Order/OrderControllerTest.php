@@ -49,7 +49,7 @@ class OrderControllerTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'driver_id',
+                    'id',
                     'status',
                     'type',
                 ]

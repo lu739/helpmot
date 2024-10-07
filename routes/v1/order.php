@@ -12,6 +12,7 @@ Route::get('/driver/orders/active', [\App\Http\Controllers\Api\Order\Driver\Orde
     ->middleware(['auth:sanctum', CheckUserRole::class . ':' . UserRole::DRIVER->value])
     ->name('driver.orders.active');
 Route::apiResource('/driver/orders', \App\Http\Controllers\Api\Order\Driver\OrderController::class)
+    ->names('driver.orders')
     ->only(['index', 'show'])
     ->middleware(['auth:sanctum', CheckUserRole::class . ':' . UserRole::DRIVER->value]);
 
