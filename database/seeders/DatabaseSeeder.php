@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(14)->create([
             'role' => UserRole::CLIENT->value,
+            'password' => Hash::make('12345678CLIENT'),
         ]);
 
 

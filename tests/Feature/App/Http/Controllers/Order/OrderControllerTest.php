@@ -49,7 +49,7 @@ class OrderControllerTest extends TestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => [
-                    'driver_id',
+                    'id',
                     'status',
                     'type',
                 ]
@@ -59,6 +59,7 @@ class OrderControllerTest extends TestCase
 
     public function test_get_order(): void
     {
+        Sanctum::actingAs($this->user, ['*']);
         $response = $this->get(route('orders.show', $this->user->orders()->first()));
 
         $response->assertOk();
