@@ -69,6 +69,7 @@ class RefreshCodeUserController extends Controller
             DB::beginTransaction();
 
             $refreshPhoneCodeUserDto = (new RefreshPhoneCodeUserDto())
+                ->setModel(new User)
                 ->setPhoneCode(random_int(100000, 999999))
                 ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
                 ->setId($user->id);

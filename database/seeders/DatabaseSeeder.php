@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'role' => UserRole::ADMIN->value,
             'email' => 'test@test.com',
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make('12345678ADMIN'),
         ]);
 
         // Сидеры водителей
@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         foreach (range(1, 5) as $i) {
             $user = User::factory()->create([
                 'role' => UserRole::DRIVER->value,
+                'password' => Hash::make('12345678DRIVER'),
             ]);
 
             $driver = Driver::factory()->create([

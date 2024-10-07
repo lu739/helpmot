@@ -217,7 +217,7 @@
                     "User"
                 ],
                 "summary": "Онбординг юзера",
-                "operationId": "e536133def002089c66528805af5850b",
+                "operationId": "02316dac560303e027d0f3947727c8f8",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -302,7 +302,7 @@
                     "User"
                 ],
                 "summary": "Смена смс-кода юзера при онбординге",
-                "operationId": "b66e409f7d87569b2f12a06b6797353a",
+                "operationId": "8e7f3c8a3a39aae590bee278dcb5fdbb",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -631,6 +631,10 @@
                                     "properties": {
                                         "data": {
                                             "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "11"
+                                                },
                                                 "driver_id": {
                                                     "type": "integer|null",
                                                     "example": "87091160"
@@ -792,18 +796,18 @@
                                             "properties": {
                                                 "types": {
                                                     "properties": {
-                                                        "key": {
+                                                        "tow_truck": {
                                                             "type": "string",
-                                                            "example": "value"
+                                                            "example": "Эвакуатор"
                                                         }
                                                     },
                                                     "type": "object"
                                                 },
                                                 "statuses": {
                                                     "properties": {
-                                                        "key": {
+                                                        "active": {
                                                             "type": "string",
-                                                            "example": "value"
+                                                            "example": "Активен"
                                                         }
                                                     },
                                                     "type": "object"
@@ -942,6 +946,239 @@
                                                             "type": "number",
                                                             "format": "float",
                                                             "example": "37.618423"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/driver/orders/active": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Данные об активных заказах для водителей",
+                "operationId": "674f7687bf37a3ff31eb70a806976031",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "11"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "example": "Эвакуатор"
+                                                },
+                                                "location_start": {
+                                                    "properties": {
+                                                        "lat": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "55.751244"
+                                                        },
+                                                        "lot": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "37.618423"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "19402 Langworth Crest\\nSchneidermouth, WV 51672"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "client_comment": {
+                                                    "type": "string",
+                                                    "example": "some comments here"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/driver/orders": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Данные о заказах водителя",
+                "operationId": "17049cc2e6de4d22379ef6a52cd1a46b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "11"
+                                                },
+                                                "status": {
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "example": "active"
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "example": "Активный"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "type": {
+                                                    "properties": {
+                                                        "key": {
+                                                            "type": "string",
+                                                            "example": "tow_truck"
+                                                        },
+                                                        "value": {
+                                                            "type": "string",
+                                                            "example": "Эвакуатор"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/driver/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Данные о заказе водителя",
+                "operationId": "753b2da65a42e294dd2ad0f0d6a81de3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "11"
+                                                },
+                                                "driver_id": {
+                                                    "type": "integer|null",
+                                                    "example": "87091160"
+                                                },
+                                                "date_start": {
+                                                    "type": "string",
+                                                    "example": "2024-09-28 21:30:46"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "active"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "tow_truck"
+                                                },
+                                                "client_comment": {
+                                                    "type": "string",
+                                                    "example": "Some comments here..."
+                                                },
+                                                "location_start": {
+                                                    "properties": {
+                                                        "lat": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "55.751244"
+                                                        },
+                                                        "lot": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "37.618423"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "19402 Langworth Crest\\nSchneidermouth, WV 51672"
                                                         }
                                                     },
                                                     "type": "object"

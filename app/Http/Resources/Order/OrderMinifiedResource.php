@@ -9,16 +9,10 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderMinifiedResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'driver_id' => $this->driver_id,
             'status' => [
                 'key' => $this->status,
                 'value' => OrderStatus::from($this->status)->russian(),
