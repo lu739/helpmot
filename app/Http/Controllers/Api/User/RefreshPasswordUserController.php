@@ -6,8 +6,8 @@ use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\RefreshPasswordRequest;
 use App\Models\User;
-use App\UseCases\User\ChangePassword\Dto\RefreshPasswordUserDto;
-use App\UseCases\User\ChangePassword\RefreshPasswordUserUseCase;
+use App\Actions\User\ChangePassword\Dto\RefreshPasswordUserDto;
+use App\Actions\User\ChangePassword\RefreshPasswordUserAction;
 use Illuminate\Support\Facades\DB;
 
 
@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\DB;
 class RefreshPasswordUserController extends Controller
 {
     public function __construct(
-        private readonly RefreshPasswordUserUseCase $refreshPasswordUserUseCase,
+        private readonly RefreshPasswordUserAction $refreshPasswordUserAction,
     )
     {
     }
@@ -71,7 +71,7 @@ class RefreshPasswordUserController extends Controller
             $refreshPasswordUserDto = (new RefreshPasswordUserDto())
                 ->setNewPassword($user->new_password)
                 ->setId($user->id);
-            $user = $this->refreshPasswordUserUseCase->handle($refreshPasswordUserDto);
+            $user = $this->refreshPasswordUserAction->handle($refreshPasswordUserDto);
 
             DB::commit();
         } catch (\Exception $exception) {

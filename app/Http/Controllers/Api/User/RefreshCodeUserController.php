@@ -7,10 +7,9 @@ use App\Http\Requests\Api\User\RefreshCodeUserRequest;
 use App\Http\Resources\User\UserMinifiedResource;
 use App\Models\User;
 use App\Services\ConfirmSms\ConfirmSmsService;
-use App\UseCases\User\RefreshPhoneCode\Dto\RefreshPhoneCodeUserDto;
-use App\UseCases\User\RefreshPhoneCode\RefreshPhoneCodeUserUseCase;
+use App\Actions\User\RefreshPhoneCode\Dto\RefreshPhoneCodeUserDto;
+use App\Actions\User\RefreshPhoneCode\RefreshPhoneCodeUserAction;
 use Illuminate\Support\Facades\DB;
-
 
 /**
  * @OA\Post (
@@ -43,8 +42,8 @@ use Illuminate\Support\Facades\DB;
 class RefreshCodeUserController extends Controller
 {
     public function __construct(
-        private readonly RefreshPhoneCodeUserUseCase $refreshPhoneCodeUserUseCase,
-        private readonly ConfirmSmsService                     $confirmSmsService,
+        private readonly RefreshPhoneCodeUserAction $refreshPhoneCodeUserAction,
+        private readonly ConfirmSmsService          $confirmSmsService,
     )
     {
     }
@@ -73,7 +72,8 @@ class RefreshCodeUserController extends Controller
                 ->setPhoneCode(random_int(100000, 999999))
                 ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
                 ->setId($user->id);
-            $user = $this->refreshPhoneCodeUserUseCase->handle($refreshPhoneCodeUserDto);
+            $user = $this->refreshPhoneCodeUserAction
+                ->handle($refreshPhoneCodeUserDto);
 
             DB::commit();
         } catch (\Exception $exception) {
@@ -84,7 +84,7 @@ class RefreshCodeUserController extends Controller
             ], 500);
         }
 
-        if (app()->environment('local')) {
+        if (!app()->environment('production')) {
             return response()->json([
                 'user' => UserMinifiedResource::make($user)->resolve(),
             ]);

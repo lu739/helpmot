@@ -7,10 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\RegisterRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\OnboardingUser;
-use App\UseCases\User\Create\CreateUserUseCase;
-use App\UseCases\User\Create\Dto\CreateUserDto;
-use App\UseCases\User\GenerateTokens\GenerateTokensUserUseCase;
-use Carbon\Carbon;
+use App\Actions\OnboardingUser\Check\CheckOnboardingUserAction;
+use App\Actions\OnboardingUser\Check\Dto\CheckOnboardingUserDto;
+use App\Actions\User\Create\CreateUserAction;
+use App\Actions\User\Create\Dto\CreateUserDto;
+use App\Actions\User\GenerateTokens\GenerateTokensUserAction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -43,49 +44,43 @@ use Illuminate\Support\Facades\DB;
 class RegisterUserController extends Controller
 {
     public function __construct(
-        private readonly CreateUserUseCase $createUserUseCase,
-        private readonly GenerateTokensUserUseCase $generateTokensUserUseCase,
+        private readonly CreateUserAction         $createUserAction,
+        private readonly GenerateTokensUserAction $generateTokensUserAction,
     )
     {
     }
 
     public function __invoke(RegisterRequest $request)
     {
-        $data = $request->validated();
+        $dto = CheckOnboardingUserDto::fromRequest($request);
+        $dto->setCaseType('register');
 
-        $onboardingUser = OnboardingUser::query()
-            ->where('phone', $data['phone'])
-            ->where('id', $data['onboarding_id'])
-            ->first();
+        $checkedOnboardingUser = (new CheckOnboardingUserAction())
+            ->handle($dto);
 
-        if (!$onboardingUser) {
-            return responseFailed(404, __('exceptions.onboarding_user_found_error'));
-        }
-        if ($onboardingUser['phone_code'] != $data['phone_code']) {
-            return responseFailed(404, __('exceptions.phone_code_error'));
-        }
-
-        if ($onboardingUser->isCodeExpired()) {
-            return responseFailed(404, __('exceptions.phone_code_expired_error'));
+        if (!$checkedOnboardingUser instanceof OnboardingUser) {
+            return $checkedOnboardingUser;
         }
 
         try {
             DB::beginTransaction();
-            $createUserDto = (new CreateUserDto())
-                ->setPhone($data['phone'])
-                ->setName($onboardingUser['name'])
-                ->setPassword($onboardingUser['password'])
-                ->setPhoneVerified(now()->format('Y-m-d H:i:s'))
-                ->setRole(UserRole::from($onboardingUser['role']));
-            $user = $this->createUserUseCase->handle($createUserDto);
 
-            $onboardingUser->user()->associate($user)->save();
+                $createUserDto = (new CreateUserDto())
+                    ->setPhone($dto->getPhone())
+                    ->setName($checkedOnboardingUser['name'])
+                    ->setPassword($checkedOnboardingUser['password'])
+                    ->setPhoneVerified(now()->format('Y-m-d H:i:s'))
+                    ->setRole(UserRole::from($checkedOnboardingUser['role']));
+
+                $user = $this->createUserAction->handle($createUserDto);
+
+                $checkedOnboardingUser->user()->associate($user)->save();
 
             DB::commit();
 
             Auth::guard()->login($user);
 
-            $tokens = $this->generateTokensUserUseCase->handle($user);
+            $tokens = $this->generateTokensUserAction->handle($user);
 
             return response()->json([
                 'user' => UserResource::make($user)->resolve(),
