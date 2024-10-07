@@ -5,7 +5,8 @@ use App\Http\Middleware\CheckUserRole;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/orders', \App\Http\Controllers\Api\Order\OrderController::class)
-    ->middleware('auth:sanctum');
+    ->only(['index', 'show'])
+    ->middleware(['auth:sanctum', CheckUserRole::class . ':' . UserRole::CLIENT->value]);
 
 Route::get('/driver/orders/active', [\App\Http\Controllers\Api\Order\Driver\OrderController::class, 'active'])
     ->middleware(['auth:sanctum', CheckUserRole::class . ':' . UserRole::DRIVER->value])
