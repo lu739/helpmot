@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 
         // Сидеры водителей
         $busyDrivers = [];;
-        foreach (range(1, 5) as $i) {
+        foreach (range(1, 10) as $i) {
             $user = User::factory()->create([
                 'role' => UserRole::DRIVER->value,
                 'password' => Hash::make('12345678DRIVER'),
@@ -37,12 +37,12 @@ class DatabaseSeeder extends Seeder
             ]);
             if ($driver->is_activate) {
                 $driver->update([
-                    'location_activate' => json_encode([
-                        'lot' => round(mt_rand(10 * 100000, 99 * 100000) / 100000, 5),
-                        'lat' => round(mt_rand(10 * 100000, 99 * 100000) / 100000, 5),
-                    ]),
+                    'location_activate' => createLocation(),
+                    'is_busy' => fake()->numberBetween(0, 1),
                 ]);
-                $busyDrivers[] = $user->id;
+                if ($driver->is_busy) {
+                    $busyDrivers[] = $user->id;
+                }
             }
         }
 

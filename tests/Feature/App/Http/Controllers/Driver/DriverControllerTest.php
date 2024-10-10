@@ -37,10 +37,7 @@ class DriverControllerTest extends TestCase
 
         if ($this->driver->is_activate) {
             $this->driver->update([
-                'location_activate' => json_encode([
-                    'lot' => round(mt_rand(10 * 100000, 99 * 100000) / 100000, 5),
-                    'lat' => round(mt_rand(10 * 100000, 99 * 100000) / 100000, 5),
-                ]),
+                'location_activate' => createLocation(),
             ]);
         }
     }

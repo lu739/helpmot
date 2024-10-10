@@ -12,6 +12,7 @@ class Driver extends Model
     protected $fillable = [
       'location_activate',
       'is_activate',
+      'is_busy',
     ];
 
     public function orders() {
@@ -25,5 +26,9 @@ class Driver extends Model
     public function isActive()
     {
         return $this->is_activate;
+    }
+    public function isBusy(): bool
+    {
+        return $this->is_busy === true;
     }
 }
