@@ -14,3 +14,19 @@ function responseFailed($status = 400, $message = 'failed'): \Illuminate\Http\Js
         'message' => $message
     ], $status);
 }
+
+function createLocation(?string $address = null): string
+{
+    $location = [
+        'lot' => round(mt_rand(config()->get('location.lot.min') * 100000, config()->get('location.lot.max') * 100000) / 100000, 5),
+        'lat' => round(mt_rand(config()->get('location.lat.min') * 100000, config()->get('location.lat.max') * 100000) / 100000, 5),
+    ];
+
+    if ($address) {
+        $location['address'] = $address;
+    }
+
+    return json_encode($location);
+}
+
+

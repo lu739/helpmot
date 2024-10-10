@@ -968,7 +968,7 @@
                     "Order"
                 ],
                 "summary": "Данные об активных заказах для водителей",
-                "operationId": "674f7687bf37a3ff31eb70a806976031",
+                "operationId": "79f5f27317928fabd0d536ca38dfd888",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -997,7 +997,7 @@
                                                     "type": "integer",
                                                     "example": "11"
                                                 },
-                                                "value": {
+                                                "type": {
                                                     "type": "string",
                                                     "example": "Эвакуатор"
                                                 },
@@ -1016,6 +1016,105 @@
                                                         "address": {
                                                             "type": "string",
                                                             "example": "19402 Langworth Crest\\nSchneidermouth, WV 51672"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/driver/orders/{order}/active": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Данные об активном заказе для водителей",
+                "operationId": "08cab5911b24d16893ce0b1e7e45be23",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "11"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Создан"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Эвакуатор"
+                                                },
+                                                "location_start": {
+                                                    "properties": {
+                                                        "lat": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "55.751244"
+                                                        },
+                                                        "lot": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "37.618423"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "19402 Langworth Crest\\nSchneidermouth, WV 51672"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "client": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 60081201
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Marjorie Okuneva"
+                                                        },
+                                                        "phone": {
+                                                            "type": "string",
+                                                            "example": "79820354831"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "example": "client"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "dahlia81@example.org"
                                                         }
                                                     },
                                                     "type": "object"
@@ -1042,7 +1141,7 @@
                     "Order"
                 ],
                 "summary": "Данные о заказах водителя",
-                "operationId": "17049cc2e6de4d22379ef6a52cd1a46b",
+                "operationId": "f9bbc27c1cc1b23135d35830445880d1",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1115,7 +1214,7 @@
                     "Order"
                 ],
                 "summary": "Данные о заказе водителя",
-                "operationId": "753b2da65a42e294dd2ad0f0d6a81de3",
+                "operationId": "4e32751f78eb78b7f8c5d02839f69bc7",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1159,6 +1258,109 @@
                                                 "type": {
                                                     "type": "string",
                                                     "example": "tow_truck"
+                                                },
+                                                "client_comment": {
+                                                    "type": "string",
+                                                    "example": "Some comments here..."
+                                                },
+                                                "location_start": {
+                                                    "properties": {
+                                                        "lat": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "55.751244"
+                                                        },
+                                                        "lot": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "37.618423"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "19402 Langworth Crest\\nSchneidermouth, WV 51672"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/driver/orders/{order}/take": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Взять заказ в работу (для водителей)",
+                "operationId": "61d9ed50c2525c8b50411e0468513e1b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "11"
+                                                },
+                                                "client": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 60081201
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Marjorie Okuneva"
+                                                        },
+                                                        "phone": {
+                                                            "type": "string",
+                                                            "example": "79820354831"
+                                                        },
+                                                        "role": {
+                                                            "type": "string",
+                                                            "example": "client"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "dahlia81@example.org"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "В процессе"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Эвакуатор"
                                                 },
                                                 "client_comment": {
                                                     "type": "string",

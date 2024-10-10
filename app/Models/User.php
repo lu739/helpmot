@@ -83,6 +83,11 @@ class User extends Authenticatable implements SmsUserInterface
     {
         return $this->hasMany(Order::class, 'client_id');
     }
+
+    public function driver()
+    {
+        return $this->hasOne(Driver::class);
+    }
     public function getId(): string
     {
         return $this->id;
