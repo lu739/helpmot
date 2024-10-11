@@ -21,9 +21,7 @@ class DriverController extends Controller implements HasMiddleware
             ]),
         ];
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return response()->json([
@@ -32,41 +30,30 @@ class DriverController extends Controller implements HasMiddleware
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Driver $driver)
     {
-        $showDriver = Driver::find($driver->id);
-
-        if (!$showDriver->isActive()) {
+        if (!$driver->isActivate()) {
             throw new DriverNotActiveException();
         }
 
         return response()->json([
-            'data' => DriverResource::make($showDriver)->resolve(),
+            'data' => DriverResource::make($driver)->resolve(),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         //

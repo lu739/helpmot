@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Api\Order;
+namespace App\Http\Controllers\Api\Order\ClientPart;
 
-use App\Enum\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Order\OrderMinifiedResource;
 use App\Http\Resources\Order\OrderResource;

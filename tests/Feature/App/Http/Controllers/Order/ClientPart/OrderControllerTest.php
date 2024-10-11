@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\App\Http\Controllers\Order;
+namespace Tests\Feature\App\Http\Controllers\Order\ClientPart;
 
 use App\Enum\UserRole;
 use App\Models\Driver;

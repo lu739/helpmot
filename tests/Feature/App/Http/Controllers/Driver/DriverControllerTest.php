@@ -42,9 +42,6 @@ class DriverControllerTest extends TestCase
         }
     }
 
-    /**
-     * A basic feature test example.
-     */
     public function test_get_drivers(): void
     {
         $response = $this->get(route('drivers.index'));
