@@ -13,6 +13,7 @@ class TakeOrderByDriverAction {
         $order->update([
             'driver_id' => $driver->user->id,
             'status' => OrderStatus::IN_PROGRESS->value,
+            'date_start' => now(),
         ]);
 
         $driver->update([

@@ -22,7 +22,6 @@ class OrderFactory extends Factory
 
         return [
             'status' => fake()->randomElement($statuses),
-            'date_start' => now(),
             'location_start' => createLocation(fake()->address()),
             'client_comment' => random_int(0, 1) > 0.5 ? fake()->text() : '',
         ];
