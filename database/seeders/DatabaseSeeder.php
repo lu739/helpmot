@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
                 } else {
                     $order->update([
                         'driver_id' => $busyDrivers[0],
+                        'date_start' => now(),
                     ]);
                     array_shift($busyDrivers);
                 }

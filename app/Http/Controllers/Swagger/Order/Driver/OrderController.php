@@ -68,6 +68,7 @@ use App\Http\Controllers\Controller;
  *                       @OA\Property(property="email", type="string", example="dahlia81@example.org"),
  *                   ),
  *                  @OA\Property(property="client_comment", type="string", example="some comments here"),
+ *                  @OA\Property(property="date_start", type="string", example="2024-10-10 23:21:40"),
  *              ),
  *          )
  *      )
@@ -170,6 +171,7 @@ use App\Http\Controllers\Controller;
  *                      @OA\Property(property="lot", type="float", example="37.618423"),
  *                      @OA\Property(property="address", type="string", example="19402 Langworth Crest\nSchneidermouth, WV 51672"),
  *                  ),
+ *                  @OA\Property(property="date_start", type="string", example="2024-10-10 23:21:40"),
  *             ),
  *          )
  *      )
