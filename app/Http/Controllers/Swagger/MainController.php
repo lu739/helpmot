@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Swagger;
 
 use App\Http\Controllers\Controller;
 
+
+
 /**
  * @OA\PathItem(
  *     path="/api/"
@@ -69,6 +71,35 @@ use App\Http\Controllers\Controller;
  *     )
  * )
  *
+ *
+ * @OA\Schema(
+ *      schema="UserDriverResource",
+ *      @OA\Property(property="id", type="integer", example=18745988),
+ *      @OA\Property(property="name", type="string", example="John Doe"),
+ *      @OA\Property(property="phone", type="string", example="79955756252"),
+ *      @OA\Property(property="role", type="string", example="driver"),
+ *      @OA\Property(property="email", type="string", example="johndoe@example.com"),
+ *      @OA\Property(
+ *          property="driver_data",
+ *          type="object",
+ *          @OA\Property(property="id", type="integer", example=3),
+ *          @OA\Property(property="is_activate", type="boolean", example=1),
+ *          @OA\Property(property="is_busy", type="boolean", example=false),
+ *          @OA\Property(property="location_activate", type="object",
+ *              @OA\Property(property="lat", type="float", example=55.751244),
+ *              @OA\Property(property="lot", type="float", example=37.618423),
+ *          ),
+ *      )
+ *  )
+ *
+ * @OA\Schema(
+ *      schema="UserResource",
+ *      @OA\Property(property="id", type="integer", example=18745988),
+ *      @OA\Property(property="name", type="string", example="John Doe"),
+ *      @OA\Property(property="phone", type="string", example="79955756252"),
+ *      @OA\Property(property="role", type="string", example="driver"),
+ *      @OA\Property(property="email", type="string", example="johndoe@example.com"),
+ * )
  */
 class MainController extends Controller
 {

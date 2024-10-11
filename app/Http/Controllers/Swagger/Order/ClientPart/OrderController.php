@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Swagger\Order;
+namespace App\Http\Controllers\Swagger\Order\ClientPart;
 
 use App\Http\Controllers\Controller;
 
