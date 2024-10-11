@@ -23,7 +23,7 @@ class Driver extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function isActive()
+    public function isActivate()
     {
         return $this->is_activate;
     }
