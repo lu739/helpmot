@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class OrderControllerTest extends TestCase
+class HistoryOrderControllerTest extends TestCase
 {
     use RefreshDatabase;
     private Collection $clients;
