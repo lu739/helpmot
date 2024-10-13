@@ -97,7 +97,7 @@ use App\Http\Controllers\Controller;
  *      )
  *  )
  */
-class OrderController extends Controller
+class HistoryOrderController extends Controller
 {
 
 }
