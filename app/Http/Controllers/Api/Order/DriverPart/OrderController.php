@@ -36,13 +36,14 @@ class OrderController extends Controller
 
     public function takeByDriver(Order $order)
     {
-        // ToDo сделать смену статуса заказа с использованием красивого паттерна
+        try {
+            $order = (new TakeOrderByDriverAction())->handle($order, request()->user()->driver);
 
-        $order = (new TakeOrderByDriverAction())
-            ->handle($order, request()->user()->driver);
-
-        return response()->json([
-            'data' => OrderActiveResource::make($order->load('client')),
-        ]);
+            return response()->json([
+                'data' => OrderActiveResource::make($order->load('client')),
+            ]);
+        } catch (\Throwable $e) {
+            return responseFailed(500, $e->getMessage());
+        }
     }
 }
