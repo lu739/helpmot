@@ -24,11 +24,11 @@ class CheckOnboardingUserDto
     public static function fromRequest(Request $request): self
     {
         return new self(
-            $request->get('phone'),
-            UserRole::from($request->get('role')),
-            $request->get('onboarding_id'),
-            $request->get('phone_code'),
-            $request->get('phone_code_datetime'),
+            phone: $request->get('phone'),
+            role: UserRole::from($request->input('role')),
+            onboardingId: $request->get('onboarding_id'),
+            phoneCode: $request->get('phone_code'),
+            phoneCodeDatetime: $request->get('phone_code_datetime'),
         );
     }
 
