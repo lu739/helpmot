@@ -6,6 +6,65 @@
     },
     "paths": {
         "/api/": {},
+        "/api/v1/drivers/{driver}/activate": {
+            "post": {
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Активация водителя (когда водитель готов работать)",
+                "description": "\n           Активация водителя. Необходим токен авторизации (водителя).",
+                "operationId": "e03a8e2dcbe7fe5e818899fdb962ef98",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "location_activate": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "lot": {
+                                                    "type": "number",
+                                                    "example": 56.04298
+                                                },
+                                                "lat": {
+                                                    "type": "number",
+                                                    "example": 37.41788
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/DriverResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/data_user": {
             "get": {
                 "tags": [
@@ -690,40 +749,7 @@
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": "10"
-                                                },
-                                                "is_activate": {
-                                                    "type": "integer",
-                                                    "example": "1"
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Kayden Considine"
-                                                },
-                                                "phone": {
-                                                    "type": "string",
-                                                    "example": "79939677085"
-                                                },
-                                                "location_activate": {
-                                                    "properties": {
-                                                        "lat": {
-                                                            "type": "number",
-                                                            "format": "float",
-                                                            "example": "55.751244"
-                                                        },
-                                                        "lot": {
-                                                            "type": "number",
-                                                            "format": "float",
-                                                            "example": "37.618423"
-                                                        }
-                                                    },
-                                                    "type": "object"
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/DriverResource"
                                         }
                                     },
                                     "type": "object"
@@ -740,7 +766,7 @@
                     "Order"
                 ],
                 "summary": "Данные о заказах юзера",
-                "operationId": "e3d990511875964e1db1a1f0ed86706b",
+                "operationId": "c9b0edb17079a1c9eb24ad8716835ca5",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -817,7 +843,7 @@
                     "Order"
                 ],
                 "summary": "Данные о заказе юзера",
-                "operationId": "30e1dec62254b784a13f72c585a6849a",
+                "operationId": "db6a0038536d8bedafe779ef51b9da6b",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -903,7 +929,7 @@
                     "Order"
                 ],
                 "summary": "Данные статусов/типов по заказам для селектов",
-                "operationId": "fdc24e4d7a2ca1206d3c5525713bc552",
+                "operationId": "6f7471ed49c1e31b1f6e325104a6547c",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1124,7 +1150,7 @@
                 ],
                 "summary": "Данные о заказах водителя",
                 "description": "\n            Необходим токен авторизации.\n            Возвращает все заказы водителя (которые он выполнял).",
-                "operationId": "ebee642cc7e23feab39fc015fc55ae07",
+                "operationId": "cb0effbd8d855696714b2e9bc7adbce7",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1188,7 +1214,7 @@
                 ],
                 "summary": "Данные о заказе водителя",
                 "description": "\n            Необходим токен авторизации (водителя).\n            Возвращает данные заказа водителя (который он выполнял).",
-                "operationId": "3102b9c6191f2074224a951a59ccf7c5",
+                "operationId": "bbc23f644f89f385c4010f95600ff803",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1265,7 +1291,7 @@
                 ],
                 "summary": "Взять заказ в работу (для водителей)",
                 "description": "\n            Необходим токен авторизации (водителя).\n            Взять заказ в работу (для активированного и не занятого другим заказом водителя).",
-                "operationId": "0bea4ad16db89f2e28860636eb251b3c",
+                "operationId": "24d9ef8b1ae1d690d101cbc5ab4bcb4c",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1416,6 +1442,46 @@
                 },
                 "type": "object"
             },
+            "DriverResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "is_activate": {
+                        "type": "boolean",
+                        "example": 1
+                    },
+                    "is_busy": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "79955756252"
+                    },
+                    "location_activate": {
+                        "properties": {
+                            "lat": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 55.751244
+                            },
+                            "lot": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 37.618423
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "UserResource": {
                 "properties": {
                     "id": {
@@ -1453,12 +1519,12 @@
     },
     "tags": [
         {
-            "name": "User",
-            "description": "User"
-        },
-        {
             "name": "Driver",
             "description": "Driver"
+        },
+        {
+            "name": "User",
+            "description": "User"
         },
         {
             "name": "Order",

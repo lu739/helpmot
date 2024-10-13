@@ -57,16 +57,7 @@ use App\Http\Controllers\Controller;
  *         response=200,
  *         description="OK",
  *         @OA\JsonContent(
- *             @OA\Property(property="data", type="object",
- *                  @OA\Property(property="id", type="integer", example="10"),
- *                  @OA\Property(property="is_activate", type="integer", example="1"),
- *                  @OA\Property(property="name", type="string", example="Kayden Considine"),
- *                  @OA\Property(property="phone", type="string", example="79939677085"),
- *                  @OA\Property(property="location_activate", type="object",
- *                      @OA\Property(property="lat", type="float", example="55.751244"),
- *                      @OA\Property(property="lot", type="float", example="37.618423"),
- *                  ),
- *             ),
+ *             @OA\Property(property="data", type="object", ref="#/components/schemas/DriverResource"),
  *         )
  *     )
  * )
@@ -90,6 +81,19 @@ use App\Http\Controllers\Controller;
  *              @OA\Property(property="lot", type="float", example=37.618423),
  *          ),
  *      )
+ *  )
+ *
+ * @OA\Schema(
+ *      schema="DriverResource",
+ *      @OA\Property(property="id", type="integer", example=3),
+ *      @OA\Property(property="is_activate", type="boolean", example=1),
+ *      @OA\Property(property="is_busy", type="boolean", example=false),
+ *      @OA\Property(property="name", type="string", example="John Doe"),
+ *      @OA\Property(property="phone", type="string", example="79955756252"),
+ *      @OA\Property(property="location_activate", type="object",
+ *          @OA\Property(property="lat", type="float", example=55.751244),
+ *          @OA\Property(property="lot", type="float", example=37.618423),
+ *      ),
  *  )
  *
  * @OA\Schema(

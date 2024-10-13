@@ -5,7 +5,7 @@ use App\Http\Middleware\CheckDriverActivateAndNotBusy;
 use App\Http\Middleware\CheckUserRole;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('/orders', \App\Http\Controllers\Api\Order\ClientPart\OrderController::class)
+Route::apiResource('/orders', \App\Http\Controllers\Api\Order\ClientPart\HistoryOrderController::class)
     ->only(['index', 'show'])
     ->middleware([
         'auth:sanctum',
@@ -13,7 +13,7 @@ Route::apiResource('/orders', \App\Http\Controllers\Api\Order\ClientPart\OrderCo
     ]);
 
 
-Route::post('/driver/orders/{order}/take', [\App\Http\Controllers\Api\Order\DriverPart\OrderController::class, 'takeByDriver'])
+Route::post('/driver/orders/{order}/take', \App\Http\Controllers\Api\Order\DriverPart\TakeByDriverOrderController::class)
     ->middleware([
         'auth:sanctum',
         CheckUserRole::class . ':' . UserRole::DRIVER->value,
@@ -32,7 +32,7 @@ Route::apiResource('/driver/active/orders', \App\Http\Controllers\Api\Order\Driv
     ]);
 
 
-Route::apiResource('/driver/orders', \App\Http\Controllers\Api\Order\DriverPart\OrderController::class)
+Route::apiResource('/driver/orders', \App\Http\Controllers\Api\Order\DriverPart\HistoryOrderController::class)
     ->names('driver.orders')
     ->only(['index', 'show'])
     ->middleware([

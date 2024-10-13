@@ -9,7 +9,7 @@ use App\Models\Order;
 use App\Services\Exceptions\Order\OrderDoesNotBelongUserException;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class HistoryOrderController extends Controller
 {
     public function index(Request $request)
     {

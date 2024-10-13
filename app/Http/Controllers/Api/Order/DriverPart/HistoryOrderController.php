@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Api\Order\DriverPart;
 
-use App\Actions\Order\TakeByDriver\TakeOrderByDriverAction;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Order\OrderActiveResource;
 use App\Http\Resources\Order\OrderMinifiedResource;
 use App\Http\Resources\Order\OrderResource;
 use App\Models\Order;
 use App\Services\Exceptions\Order\OrderDoesNotBelongUserException;
 
-class OrderController extends Controller
+class HistoryOrderController extends Controller
 {
     public function index()
     {
@@ -31,18 +29,6 @@ class OrderController extends Controller
 
         return response()->json([
             'data' => OrderResource::make($order)->resolve(),
-        ]);
-    }
-
-    public function takeByDriver(Order $order)
-    {
-        // ToDo сделать смену статуса заказа с использованием красивого паттерна
-
-        $order = (new TakeOrderByDriverAction())
-            ->handle($order, request()->user()->driver);
-
-        return response()->json([
-            'data' => OrderActiveResource::make($order->load('client')),
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enum\OrderStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,8 @@ class Order extends Model
     protected $fillable = [
         'client_id',
         'driver_id',
-        'status'
+        'status',
+        'date_start',
     ];
 
     public function client() {
@@ -29,5 +31,12 @@ class Order extends Model
     {
         $query
             ->where('status', OrderStatus::ACTIVE->value);
+    }
+
+    public function statusState(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => OrderStatus::from($this->status)->createState($this),
+        );
     }
 }
