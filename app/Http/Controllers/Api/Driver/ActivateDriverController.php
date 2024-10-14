@@ -42,7 +42,11 @@ class ActivateDriverController extends Controller
 {
     public function __invoke(ActivateRequest $request)
     {
-        $driver = Driver::findOrFail($request->input('driver'));
+        $driver = Driver::findOrFail(request()->user()->driver->id);
+
+        if ($driver->is_activate) {
+            return responseFailed(404, __('exceptions.driver_not_found'));
+        }
 
         $driver->update([
             'is_activate' => 1,
