@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 return responseFailed(401, __('exceptions.no_auth'));
             }
 
+            if ($e instanceof \Illuminate\Database\QueryException) {
+                return responseFailed(404, __('exceptions.model_not_found'));
+            }
+
             if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
                 if ($e->getPrevious() instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                     return responseFailed(404, __('exceptions.model_not_found'));

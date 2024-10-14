@@ -10,7 +10,7 @@ use App\Models\Driver;
 
 /**
  * @OA\Post (
- *     path="/api/v1/drivers/{driver}/activate",
+ *     path="/api/v1/drivers/activate",
  *     summary="Активация водителя (когда водитель готов работать)",
  *     tags={"Driver"},
  *     description="
@@ -40,8 +40,10 @@ use App\Models\Driver;
  */
 class ActivateDriverController extends Controller
 {
-    public function __invoke(ActivateRequest $request, Driver $driver)
+    public function __invoke(ActivateRequest $request)
     {
+        $driver = Driver::findOrFail($request->input('driver'));
+
         $driver->update([
             'is_activate' => 1,
             'location_activate' => json_encode($request->input('location_activate')),
