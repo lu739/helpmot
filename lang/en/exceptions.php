@@ -5,6 +5,7 @@ return [
     'user_has_not_data' => 'There is not enough data to finish',
     'route_not_found' => 'Route is not found',
     'driver_not_active' => 'Driver is not active',
+    'driver_not_found' => 'Driver is not found',
     'driver_already_activate' => 'Driver is already active',
     'driver_has_active_order' => 'Driver has active order',
     'order_does_not_belong_to_user' => 'Not enough rights to view order',
