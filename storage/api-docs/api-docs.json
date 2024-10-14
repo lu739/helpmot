@@ -6,14 +6,14 @@
     },
     "paths": {
         "/api/": {},
-        "/api/v1/drivers/{driver}/activate": {
+        "/api/v1/drivers/activate": {
             "post": {
                 "tags": [
                     "Driver"
                 ],
                 "summary": "Активация водителя (когда водитель готов работать)",
                 "description": "\n           Активация водителя. Необходим токен авторизации (водителя).",
-                "operationId": "e03a8e2dcbe7fe5e818899fdb962ef98",
+                "operationId": "e006a18cd786e48ff51a2dcb26cf4f2a",
                 "requestBody": {
                     "content": {
                         "application/json": {
