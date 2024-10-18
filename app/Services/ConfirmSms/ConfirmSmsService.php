@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class ConfirmSmsService
 {
-    public SmsUserInterface $smsUser;
+    private SmsUserInterface $smsUser;
 
     public function setSmsUser(SmsUserInterface $smsUser): ConfirmSmsService
     {

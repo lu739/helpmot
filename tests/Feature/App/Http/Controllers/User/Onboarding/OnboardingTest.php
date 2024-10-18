@@ -4,6 +4,7 @@ namespace Tests\Feature\App\Http\Controllers\User\Onboarding;
 
 use App\Enum\UserRole;
 use App\Models\OnboardingUser;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -54,6 +55,35 @@ class OnboardingTest extends TestCase
                 ]
             ])
         ;
+    }
+
+    public function test_validation_unique_phone_role_rule(): void
+    {
+        User::factory()->create([
+            'phone' => $this->phone,
+            'role' => UserRole::CLIENT->value,
+        ]);
+        $data = [
+            'name' => 'Test User',
+            'phone' => $this->phone,
+            'password' => $this->password,
+            'role' => UserRole::CLIENT->value,
+        ];
+        $response = $this->post(route('onboarding'), $data);
+
+        $response->assertStatus(422)
+            ->assertJsonStructure([
+                'errors' => [
+                    'phone',
+                ]
+            ])
+            ->assertJsonFragment([
+                'errors' => [
+                    'phone' => [
+                        __('exceptions.user_already_exists'),
+                    ],
+                ],
+            ]);
     }
 
     public function test_create_new_onboarding_user(): void

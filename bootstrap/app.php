@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 return responseFailed(404, __('exceptions.route_not_found'));
             }
             if ($e instanceof \App\Services\Exceptions\Driver\DriverNotActiveException) {
-                return responseFailed(404, __('exceptions.driver_not_active'));
+                return responseFailed(404, __('exceptions.driver_not_activate'));
             }
         });
     })->create();

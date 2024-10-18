@@ -32,7 +32,6 @@ class DriverController extends Controller implements HasMiddleware
 
     public function store(Request $request)
     {
-        //
     }
 
 
@@ -50,12 +49,10 @@ class DriverController extends Controller implements HasMiddleware
 
     public function update(Request $request, string $id)
     {
-        //
     }
 
 
     public function destroy(string $id)
     {
-        //
     }
 }

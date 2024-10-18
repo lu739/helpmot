@@ -66,7 +66,7 @@ class RefreshCodeOnboardingUserController extends Controller
             DB::beginTransaction();
 
             $refreshPhoneCodeOnboardingUserDto = (new RefreshPhoneCodeUserDto())
-                ->setModel(new OnboardingUser)
+                ->setModel(new OnboardingUser())
                 ->setPhoneCode(random_int(100000, 999999))
                 ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
                 ->setId($checkedOnboardingUser->id);

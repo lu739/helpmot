@@ -10,13 +10,13 @@ class Driver extends Model
     use HasFactory;
 
     protected $fillable = [
-      'location_activate',
-      'is_activate',
-      'is_busy',
+        'location_activate',
+        'is_activate',
+        'is_busy',
     ];
 
     public function orders() {
-        return $this->hasMany(Order::class, 'driver_id','user_id');
+        return $this->hasMany(Order::class, 'driver_id', 'user_id');
     }
 
     public function user() {

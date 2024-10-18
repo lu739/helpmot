@@ -65,6 +65,38 @@
                 ]
             }
         },
+        "/api/v1/drivers/deactivate": {
+            "post": {
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Деактивация водителя (когда водитель завершает работу и не занят на заказе)",
+                "description": "\n           Деактивация водителя. Необходим токен авторизации (водителя). Водитель не должен быть занят на действующем заказе",
+                "operationId": "cdb7566e721d95d5e61b951c87047ffc",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/DriverResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/data_user": {
             "get": {
                 "tags": [
