@@ -19,7 +19,7 @@ class CheckDriverActivateAndNotBusy
             return responseFailed(403, __('exceptions.driver_has_active_order'));
         }
         if (!request()->user()->driver->isActivate()) {
-            return responseFailed(403, __('exceptions.driver_not_active'));
+            return responseFailed(403, __('exceptions.driver_not_activate'));
         }
 
         return $next($request);
