@@ -17,7 +17,7 @@ class CheckExistsOnboardingPhoneRole implements ValidationRule
     public function validate($attribute, $value, $fail): void
     {
         $exists = DB::table('onboarding_users')
-            ->where('phone', $value)
+            ->where($attribute, $value)
             ->where('role', $this->role)
             ->exists();
 

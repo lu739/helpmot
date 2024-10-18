@@ -111,22 +111,23 @@ class OnboardingUserController extends Controller
             return response()->json([
                 'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
             ]);
-        } else {
-            $response = $this->confirmSmsService->setSmsUser($onboardingUser)->sendSmsToUser();
-
-            if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
-                return response()->json([
-                    'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
-                ]);
-            } else {
-                $message = __('exceptions.sms_server_error') .
-                    ': ' . ($response->json()['description'] ?? 'Unknown error') .
-                    ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
-
-                return response()->json([
-                    'message' => $message,
-                ], 500);
-            }
         }
+
+        $response = $this->confirmSmsService->setSmsUser($onboardingUser)->sendSmsToUser();
+
+        if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
+            return response()->json([
+                'user' => OnboardingClientResource::make($onboardingUser)->resolve(),
+            ]);
+        } else {
+            $message = __('exceptions.sms_server_error') .
+                ': ' . ($response->json()['description'] ?? 'Unknown error') .
+                ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
+
+            return response()->json([
+                'message' => $message,
+            ], 500);
+        }
+
     }
 }

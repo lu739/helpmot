@@ -69,7 +69,7 @@ class RefreshCodeUserController extends Controller
             DB::beginTransaction();
 
             $refreshPhoneCodeUserDto = (new RefreshPhoneCodeUserDto())
-                ->setModel(new User)
+                ->setModel(new User())
                 ->setPhoneCode(random_int(100000, 999999))
                 ->setPhoneCodeDatetime(now()->format('Y-m-d H:i:s'))
                 ->setId($user->id);
@@ -89,22 +89,22 @@ class RefreshCodeUserController extends Controller
             return response()->json([
                 'user' => UserMinifiedResource::make($user)->resolve(),
             ]);
+        }
+
+        $response = $this->confirmSmsService->setSmsUser($user)->sendSmsToUser();
+
+        if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
+            return response()->json([
+                'user' => UserMinifiedResource::make($user)->resolve(),
+            ]);
         } else {
-            $response = $this->confirmSmsService->setSmsUser($user)->sendSmsToUser();
+            $message = __('exceptions.sms_server_error') .
+                ': ' . ($response->json()['description'] ?? 'Unknown error') .
+                ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
 
-            if ($response->status() === 200 && strtolower($response->json()['status']) === 'ok') {
-                return response()->json([
-                    'user' => UserMinifiedResource::make($user)->resolve(),
-                ]);
-            } else {
-                $message = __('exceptions.sms_server_error') .
-                    ': ' . ($response->json()['description'] ?? 'Unknown error') .
-                    ' (status: ' . ($response->json()['status'] ?? 'Unknown status') . ')';
-
-                return response()->json([
-                    'message' => $message,
-                ], 500);
-            }
+            return response()->json([
+                'message' => $message,
+            ], 500);
         }
     }
 }
