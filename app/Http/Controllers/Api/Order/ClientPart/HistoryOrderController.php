@@ -13,10 +13,14 @@ class HistoryOrderController extends Controller
 {
     public function index(Request $request)
     {
-        $userOrders = $request->user()->orders->sortByDesc('created_at');
+        $clientOrders = Order::query()
+            ->history()
+            ->where('client_id', $request->user()->id)
+            ->get()
+            ->sortByDesc('created_at');
 
         return response()->json([
-            'data' => OrderMinifiedResource::collection($userOrders),
+            'data' => OrderMinifiedResource::collection($clientOrders),
         ]);
     }
     public function show(Request $request, Order $order)

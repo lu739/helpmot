@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enum\UserRole;
 use App\Services\ConfirmSms\Interfaces\SmsUserInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -101,6 +102,10 @@ class User extends Authenticatable implements SmsUserInterface
         return $this->phone_code;
     }
 
+    public function isDriver(): bool
+    {
+        return $this->role === UserRole::DRIVER->value;
+    }
     public function isCodeExpired(): bool
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $this->phone_code_datetime)->addMinutes(3) < now();

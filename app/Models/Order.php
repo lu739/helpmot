@@ -17,6 +17,7 @@ class Order extends Model
         'driver_id',
         'status',
         'date_start',
+        'date_end',
     ];
 
     public function client() {
@@ -27,10 +28,27 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeActive(Builder $query)
+    public function isActive()
     {
-        $query
+        return $this->status === OrderStatus::ACTIVE->value;
+    }
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query
             ->where('status', OrderStatus::ACTIVE->value);
+    }
+
+
+    public function scopeHistory(Builder $query): Builder
+    {
+        return $query
+            ->whereIn('status', [
+                OrderStatus::CLIENT_CANCEL->value,
+                OrderStatus::DRIVER_CANCEL->value,
+                OrderStatus::TIME_EXPIRED->value,
+                OrderStatus::COMPLETED_SUCCESSFULLY->value,
+            ]);
     }
 
     public function statusState(): Attribute

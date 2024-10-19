@@ -2,6 +2,7 @@
 
 use App\Enum\UserRole;
 use App\Http\Middleware\CheckDriverActivateAndNotBusy;
+use App\Http\Middleware\CheckOrderBelongsToDriver;
 use App\Http\Middleware\CheckUserRole;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,14 @@ Route::post('/driver/orders/{order}/take', \App\Http\Controllers\Api\Order\Drive
         CheckDriverActivateAndNotBusy::class,
     ])
     ->name('driver.orders.take');
+
+Route::post('/driver/orders/{order}/complete-successfully', \App\Http\Controllers\Api\Order\DriverPart\CompletedSuccessfullyByDriverOrderController::class)
+    ->middleware([
+        'auth:sanctum',
+        CheckUserRole::class . ':' . UserRole::DRIVER->value,
+        CheckOrderBelongsToDriver::class,
+    ])
+    ->name('driver.orders.complete_successfully');
 
 
 Route::apiResource('/driver/active/orders', \App\Http\Controllers\Api\Order\DriverPart\ActiveOrderController::class)

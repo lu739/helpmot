@@ -21,6 +21,10 @@ class ActiveOrderController extends Controller
 
     public function show(Order $order)
     {
+        if (!$order->isActive()) {
+            return responseFailed(404, __('exceptions.order_does_not_active'));
+        }
+
         return response()->json([
             'data' => OrderActiveResource::make($order->load('client')),
         ]);

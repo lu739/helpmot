@@ -13,8 +13,10 @@ class HistoryOrderController extends Controller
     public function index()
     {
         $driverOrders = Order::query()
+            ->history()
             ->where('driver_id', request()->user()->id)
-            ->get();
+            ->get()
+            ->sortByDesc('created_at');
 
         return response()->json([
             'data' => OrderMinifiedResource::collection($driverOrders),
