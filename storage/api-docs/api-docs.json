@@ -252,20 +252,42 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "$ref": "#/components/schemas/UserResource"
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserDriverResource"
+                                                },
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                },
+                                                "refresh_token": {
+                                                    "type": "string",
+                                                    "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "property": "data"
                                         },
-                                        "access_token": {
-                                            "type": "string",
-                                            "example": "1|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
-                                        },
-                                        "refresh_token": {
-                                            "type": "string",
-                                            "example": "2|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                },
+                                                "refresh_token": {
+                                                    "type": "string",
+                                                    "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "property": "data"
                                         }
-                                    },
-                                    "type": "object"
+                                    ]
                                 }
                             }
                         }
@@ -666,20 +688,42 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "$ref": "#/components/schemas/UserResource"
+                                    "oneOf": [
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserDriverResource"
+                                                },
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                },
+                                                "refresh_token": {
+                                                    "type": "string",
+                                                    "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "property": "data"
                                         },
-                                        "access_token": {
-                                            "type": "string",
-                                            "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
-                                        },
-                                        "refresh_token": {
-                                            "type": "string",
-                                            "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                        {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "3|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                },
+                                                "refresh_token": {
+                                                    "type": "string",
+                                                    "example": "4|OTdZhC1hXyYKSb8GasjSazFjak2RyN0G6rdDXQ4o2cffbd2f"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "property": "data"
                                         }
-                                    },
-                                    "type": "object"
+                                    ]
                                 }
                             }
                         }
@@ -1157,6 +1201,64 @@
                                                 "date_start": {
                                                     "type": "string",
                                                     "example": "2024-10-10 23:21:40"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/driver/orders/{order}/complete-successfully": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Успешное завершение заказа для водителей",
+                "description": "\n            Необходим токен авторизации (водителя).\n            Возвращает завершенный заказ.",
+                "operationId": "29694243f6412cff64d13d669b94ab6d",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "driver_id": {
+                                                    "type": "integer",
+                                                    "example": "70096860"
+                                                },
+                                                "client_id": {
+                                                    "type": "integer",
+                                                    "example": "17938572"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Успешно завершен"
+                                                },
+                                                "date_start": {
+                                                    "type": "string",
+                                                    "example": "2022-01-01T00:00:00.000000Z"
+                                                },
+                                                "date_end": {
+                                                    "type": "string",
+                                                    "example": "2022-01-01T00:00:00.000000Z"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Эвакуатор"
                                                 }
                                             },
                                             "type": "object"
