@@ -7,6 +7,7 @@ use App\Enum\UserRole;
 use App\Models\Driver;
 use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -71,6 +72,12 @@ class DatabaseSeeder extends Seeder
                     ]);
                     array_shift($busyDrivers);
                 }
+            }
+            if ($order->status === OrderStatus::COMPLETED_SUCCESSFULLY->value) {
+                $order->update([
+                    'date_start' => Carbon::now()->subMinutes(fake()->numberBetween(20, 40)),
+                    'date_end' => Carbon::now()->subMinutes(fake()->numberBetween(2, 15)),
+                ]);
             }
         }
     }

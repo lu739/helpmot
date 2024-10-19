@@ -17,7 +17,6 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-
         $statuses = array_map(fn($status) => $status->value, OrderStatus::cases());
 
         return [

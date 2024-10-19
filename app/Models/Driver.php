@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Driver extends Model
 {
@@ -15,17 +17,17 @@ class Driver extends Model
         'is_busy',
     ];
 
-    public function orders() {
+    public function orders(): HasMany {
         return $this->hasMany(Order::class, 'driver_id', 'user_id');
     }
 
-    public function user() {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 
-    public function isActivate()
+    public function isActivate(): bool
     {
-        return $this->is_activate;
+        return $this->is_activate === 1;
     }
     public function isBusy(): bool
     {

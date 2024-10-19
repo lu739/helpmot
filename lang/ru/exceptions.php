@@ -10,6 +10,8 @@ return [
     'driver_already_activate' => 'Водитель уже активен',
     'driver_has_active_order' => 'Водитель уже имеет активный заказ',
     'order_does_not_belong_to_user' => 'Недостаточно прав для просмотра заказа',
+    'order_does_not_belong_to_driver' => 'Недостаточно прав для действий по заказу',
+    'order_does_not_active' => 'Неверно указан номер активного заказа',
     'no_auth' => 'Требуется авторизация',
     'wrong_cridentials' => 'Неверный телефон или пароль',
     'user_already_exists' => 'Пользователь уже зарегистрирован',
