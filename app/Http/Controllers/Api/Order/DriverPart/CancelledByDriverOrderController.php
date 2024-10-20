@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers\Api\Order\DriverPart;
 
-use App\Actions\Order\TakeByDriver\TakeOrderByDriverAction;
+use App\Actions\Order\CancelledByDriver\CancelledOrderByDriverAction;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Order\OrderActiveResource;
+use App\Http\Resources\Order\OrderCompletedResource;
 use App\Models\Order;
-use App\States\Order\InProgressOrderState;
+use App\States\Order\DriverCancelOrderState;
 
-class TakeByDriverOrderController extends Controller
+class CancelledByDriverOrderController extends Controller
 {
     public function __invoke(Order $order)
     {
         try {
-            $order = (new TakeOrderByDriverAction())
+            $order = (new CancelledOrderByDriverAction())
                 ->handle(
                     $order,
                     request()->user()->driver,
-                    new InProgressOrderState($order)
+                    new DriverCancelOrderState($order)
                 );
 
             return response()->json([
-                'data' => OrderActiveResource::make($order->load('client')),
+                'data' => OrderCompletedResource::make($order->load('client')),
             ]);
         } catch (\Throwable $e) {
             return responseFailed(500, $e->getMessage());
