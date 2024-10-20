@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Api\Order\DriverPart;
+namespace App\Http\Controllers\Api\Order\ClientPart;
 
-use App\Actions\Order\CompletedSuccessfullyByDriver\CompletedSuccessfullyOrderByDriverAction;
+use App\Actions\Order\CancelledByClient\CancelledOrderByClientAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Order\OrderCompletedResource;
 use App\Models\Order;
-use App\States\Order\CompletedSuccessfullyOrderState;
+use App\States\Order\ClientCancelOrderState;
 
-class CompletedSuccessfullyByDriverOrderController extends Controller
+class CancelledByClientOrderController extends Controller
 {
     public function __invoke(Order $order)
     {
         try {
-            $order = (new CompletedSuccessfullyOrderByDriverAction())
+            $order = (new CancelledOrderByClientAction())
                 ->handle(
                     $order,
                     request()->user()->driver,
-                    new CompletedSuccessfullyOrderState($order)
+                    new ClientCancelOrderState($order)
                 );
 
             return response()->json([

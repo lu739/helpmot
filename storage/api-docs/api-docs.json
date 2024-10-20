@@ -1219,6 +1219,122 @@
                 ]
             }
         },
+        "/api/v1/client/orders/{order}/cancel": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Отмена заказа клиентом",
+                "description": "\n            Необходим токен авторизации (клиента).\n            Возвращает отмененный заказ.",
+                "operationId": "590144c7d99e42b2e18601d8063f8959",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "driver_id": {
+                                                    "type": "integer",
+                                                    "example": "null"
+                                                },
+                                                "client_id": {
+                                                    "type": "integer",
+                                                    "example": "17938572"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Отменен клиентом"
+                                                },
+                                                "date_start": {
+                                                    "type": "string",
+                                                    "example": "2022-01-01T00:00:00.000000Z"
+                                                },
+                                                "date_end": {
+                                                    "type": "string",
+                                                    "example": "2022-01-01T00:00:00.000000Z"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Эвакуатор"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/driver/orders/{order}/cancel": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Отмена заказа водителем",
+                "description": "\n            Необходим токен авторизации (водителя).\n            Возвращает отмененный заказ.",
+                "operationId": "d396985da973ed1cac3b38ed5afa9664",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "driver_id": {
+                                                    "type": "integer",
+                                                    "example": "null"
+                                                },
+                                                "client_id": {
+                                                    "type": "integer",
+                                                    "example": "17938572"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "Отмена водителем"
+                                                },
+                                                "date_start": {
+                                                    "type": "string",
+                                                    "example": "2022-01-01T00:00:00.000000Z"
+                                                },
+                                                "date_end": {
+                                                    "type": "string",
+                                                    "example": "2022-01-01T00:00:00.000000Z"
+                                                },
+                                                "type": {
+                                                    "type": "string",
+                                                    "example": "Эвакуатор"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/driver/orders/{order}/complete-successfully": {
             "post": {
                 "tags": [

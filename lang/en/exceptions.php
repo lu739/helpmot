@@ -11,6 +11,7 @@ return [
     'driver_has_active_order' => 'Driver has active order',
     'order_does_not_belong_to_user' => 'Not enough rights to view order',
     'order_does_not_belong_to_driver' => 'Not enough rights to access order',
+    'order_does_not_belong_to_client' => 'Not enough rights to access order',
     'order_does_not_active' => 'Wrong active order number',
     'no_auth' => 'Unauthorized',
     'wrong_cridentials' => 'Wrong cridentials',

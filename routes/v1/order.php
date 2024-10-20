@@ -2,10 +2,19 @@
 
 use App\Enum\UserRole;
 use App\Http\Middleware\CheckDriverActivateAndNotBusy;
+use App\Http\Middleware\CheckOrderBelongsToClient;
 use App\Http\Middleware\CheckOrderBelongsToDriver;
 use App\Http\Middleware\CheckUserRole;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/data-order-enums', \App\Http\Controllers\Api\Order\DataEnumsController::class)
+    ->middleware('auth:sanctum')
+    ->name('data_order_enums');
+
+
+// ClientPart
+// History client
 Route::apiResource('/orders', \App\Http\Controllers\Api\Order\ClientPart\HistoryOrderController::class)
     ->only(['index', 'show'])
     ->middleware([
@@ -13,7 +22,36 @@ Route::apiResource('/orders', \App\Http\Controllers\Api\Order\ClientPart\History
         CheckUserRole::class . ':' . UserRole::CLIENT->value,
     ]);
 
+Route::post('/client/orders/{order}/cancel', \App\Http\Controllers\Api\Order\ClientPart\CancelledByClientOrderController::class)
+    ->middleware([
+        'auth:sanctum',
+        CheckUserRole::class . ':' . UserRole::CLIENT->value,
+        CheckOrderBelongsToClient::class,
+    ])
+    ->name('client.orders.cancel');
 
+
+// DriverPart
+// History driver
+Route::apiResource('/driver/orders', \App\Http\Controllers\Api\Order\DriverPart\HistoryOrderController::class)
+    ->names('driver.orders')
+    ->only(['index', 'show'])
+    ->middleware([
+        'auth:sanctum',
+        CheckUserRole::class . ':' . UserRole::DRIVER->value
+    ]);
+
+// Active for driver
+Route::apiResource('/driver/active/orders', \App\Http\Controllers\Api\Order\DriverPart\ActiveOrderController::class)
+    ->names('driver.orders')
+    ->only(['index', 'show'])
+    ->middleware([
+        'auth:sanctum',
+        CheckUserRole::class . ':' . UserRole::DRIVER->value,
+        CheckDriverActivateAndNotBusy::class,
+    ]);
+
+// Drivers actions
 Route::post('/driver/orders/{order}/take', \App\Http\Controllers\Api\Order\DriverPart\TakeByDriverOrderController::class)
     ->middleware([
         'auth:sanctum',
@@ -30,26 +68,16 @@ Route::post('/driver/orders/{order}/complete-successfully', \App\Http\Controller
     ])
     ->name('driver.orders.complete_successfully');
 
-
-Route::apiResource('/driver/active/orders', \App\Http\Controllers\Api\Order\DriverPart\ActiveOrderController::class)
-    ->names('driver.orders')
-    ->only(['index', 'show'])
+Route::post('/driver/orders/{order}/cancel', \App\Http\Controllers\Api\Order\DriverPart\CancelledByDriverOrderController::class)
     ->middleware([
         'auth:sanctum',
         CheckUserRole::class . ':' . UserRole::DRIVER->value,
-        CheckDriverActivateAndNotBusy::class,
-    ]);
+        CheckOrderBelongsToDriver::class,
+    ])
+    ->name('driver.orders.cancel');
 
 
-Route::apiResource('/driver/orders', \App\Http\Controllers\Api\Order\DriverPart\HistoryOrderController::class)
-    ->names('driver.orders')
-    ->only(['index', 'show'])
-    ->middleware([
-        'auth:sanctum',
-        CheckUserRole::class . ':' . UserRole::DRIVER->value
-    ]);
 
 
-Route::get('/data-order-enums', \App\Http\Controllers\Api\Order\DataEnumsController::class)
-    ->middleware('auth:sanctum')
-    ->name('data_order_enums');
+
+

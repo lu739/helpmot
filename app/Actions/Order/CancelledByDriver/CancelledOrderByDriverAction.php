@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Actions\Order\TakeByDriver;
+namespace App\Actions\Order\CancelledByDriver;
 
 use App\Actions\Order\ChangeOrderStatusAction;
 use App\Models\Driver;
 use App\Models\Order;
 
 
-class TakeOrderByDriverAction extends ChangeOrderStatusAction
+class CancelledOrderByDriverAction extends ChangeOrderStatusAction
 {
     public function doUpdates(Order $order, Driver $driver): void
     {
         $order->update([
-            'driver_id' => $driver->user->id,
-            'date_start' => now(),
+            'date_start' => null,
+            'driver_id' => null,
         ]);
 
         $driver->update([
-            'is_busy' => true,
+            'is_busy' => false,
         ]);
     }
 }
