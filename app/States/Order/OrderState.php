@@ -16,14 +16,14 @@ abstract class OrderState
     abstract public function canBeChanged(): bool;
     abstract public function value(): string;
 
-    public function transitionTo(OrderState $state)
+    public function transitionTo(OrderState $state): Order|\Throwable
     {
         if (!$this->canBeChanged()) {
-            return 'Order can\'t be changed';
+            throw new \Exception(__('exceptions.order_status_cant_be_changed'));
         }
 
         if (!in_array(get_class($state), $this->allowedTransitions)) {
-            return 'This transition is not allowed';
+            throw new \Exception(__('exceptions.order_status_transaction_wrong'));
         }
 
         $this->order->update([

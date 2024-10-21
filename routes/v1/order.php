@@ -43,7 +43,7 @@ Route::apiResource('/driver/orders', \App\Http\Controllers\Api\Order\DriverPart\
 
 // Active for driver
 Route::apiResource('/driver/active/orders', \App\Http\Controllers\Api\Order\DriverPart\ActiveOrderController::class)
-    ->names('driver.orders')
+    ->names('driver.active.orders')
     ->only(['index', 'show'])
     ->middleware([
         'auth:sanctum',
@@ -75,6 +75,15 @@ Route::post('/driver/orders/{order}/cancel', \App\Http\Controllers\Api\Order\Dri
         CheckOrderBelongsToDriver::class,
     ])
     ->name('driver.orders.cancel');
+
+// Driver moving
+Route::post('/driver/orders/{order}/update-location', \App\Http\Controllers\Api\Order\DriverPart\UpdateLocationByDriverOrderController::class)
+    ->middleware([
+        'auth:sanctum',
+        CheckUserRole::class . ':' . UserRole::DRIVER->value,
+        CheckOrderBelongsToDriver::class, // ToDo подумать, может стоит проверять статус заказа
+    ])
+    ->name('driver.orders.update_location');
 
 
 

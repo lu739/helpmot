@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Http\Controllers\Order\DriverPart;
 
+use App\Enum\OrderStatus;
 use App\Enum\UserRole;
 use App\Models\Driver;
 use App\Models\Order;
@@ -26,7 +27,9 @@ class HistoryOrderControllerTest extends TestCase
         ]);
         foreach ($this->driverUsers as $driverUser) {
             Driver::factory()
-                ->create(['user_id' => $driverUser->id]);
+                ->create([
+                    'user_id' => $driverUser->id
+                ]);
         }
 
         $this->client = User::factory()->create([
@@ -37,8 +40,8 @@ class HistoryOrderControllerTest extends TestCase
             Order::factory()
                 ->create([
                     'driver_id' => $driverUser->id,
-                    'client_id' => $this->client->id]
-                );
+                    'client_id' => $this->client->id
+                ]);
         }
 
         $this->user = $this->driverUsers->first();

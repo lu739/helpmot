@@ -21,11 +21,17 @@ class Order extends Model
     ];
 
     public function client() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'client_id');
     }
 
     public function driver() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+
+    public function orderLocation()
+    {
+        return $this->hasOne(OrderLocation::class)
+            ->where('driver_id', $this->driver()->id);
     }
 
     public function isActive()

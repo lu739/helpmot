@@ -25,6 +25,11 @@ class Driver extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function activeOrderLocation()
+    {
+        return $this->hasOne(OrderLocation::class, 'driver_id', 'user_id');
+    }
+
     public function isActivate(): bool
     {
         return $this->is_activate === 1;
