@@ -1631,6 +1631,60 @@
                     }
                 ]
             }
+        },
+        "/api/v1/driver/orders/{order}/update-location": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Изменение локации водителя",
+                "description": "\n            Необходим токен авторизации (водителя).\n *     ",
+                "operationId": "751c2dfe1a2968fa8244f2976295bac8",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "datetime": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-10-23 01:19:00"
+                                                },
+                                                "last_location": {
+                                                    "properties": {
+                                                        "lat": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "55.751244"
+                                                        },
+                                                        "lot": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": "37.618423"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
         }
     },
     "components": {

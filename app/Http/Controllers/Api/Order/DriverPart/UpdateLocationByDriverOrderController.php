@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\Api\Order\DriverPart;
 
+use App\Actions\OrderLocation\Create\CreateLastLocationAction;
+use App\Actions\OrderLocation\Create\Dto\CreateOrderLocationDto;
+use App\Actions\OrderLocation\Update\Dto\UpdateOrderLocationDto;
+use App\Actions\OrderLocation\Update\UpdateLastLocationAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Order\DriverPart\UpdateLocationRequest;
 use App\Models\Order;
 use App\Models\OrderLocation;
-use Illuminate\Support\Facades\Redis;
+use App\Services\SaveLocation\Interfaces\SaverLocationInterface;
 use Carbon\Carbon;
 
 class UpdateLocationByDriverOrderController extends Controller
 {
-    public function __invoke(Order $order, UpdateLocationRequest $request)
+    public function __invoke(Order $order, UpdateLocationRequest $request, SaverLocationInterface $saver)
     {
         $data = $request->validated();
 
@@ -20,53 +24,34 @@ class UpdateLocationByDriverOrderController extends Controller
         $data['datetime'] = Carbon::createFromFormat('Y-m-d H:i:s', $data['datetime']);
 
         try {
-            // Сериализуем объекты в JSON-строки
-            $jsonData = json_encode($data);
+            $count = $saver->saveItem($data);
 
-            // Сохраняем JSON-строки в Redis Sorted Set с ключом "orders:" и значениями поля "datetime" как score
-            Redis::zadd(
-                'orders:' . $data['order_id'],
-                $data['datetime']->timestamp,
-                $jsonData
-            );
-
-            // Получаем количество записей в Redis Sorted Set
-            $count = Redis::zcard('orders:' . $data['order_id']);
-
-            // Получаем все элементы из Redis Sorted Set, отсортированные по возрастанию значения поля "datetime"
-            $cachedData = Redis::zrange(
-                'orders:' . $data['order_id'],
-                0, -1,
-                ['withscores' => true]
-            );
-
-            // Если количество записей больше REDIS_MAX_ORDER_LOCATION, удаляем лишние записи
             if ($count > env('REDIS_MAX_ORDER_LOCATION')) {
-                Redis::zremrangebyrank('orders:' . $data['order_id'], 0, $count - (env('REDIS_MAX_ORDER_LOCATION') + 1));
-
-                end($cachedData);
-                $lastData = json_decode(key($cachedData), true);
+                $lastData = $saver->removeOldItems($data,$count - (env('REDIS_MAX_ORDER_LOCATION') + 1));
 
                 $orderLocation = OrderLocation::query()
                     ->where('order_id', $data['order_id'])
                     ->where('driver_id', $data['driver_id']);
 
+                // Todo: Вынести в job
                 if ($orderLocation->exists()) {
-                    $orderLocation->update([
-                        'datetime' => $lastData['datetime'],
-                        'last_location' => json_encode($lastData['last_location']),
-                    ]);
+                    (new UpdateLastLocationAction())->handle((new UpdateOrderLocationDto())
+                        ->setId($orderLocation->first()->id)
+                        ->setDatetime($lastData['datetime'])
+                        ->setLastLocation($lastData['last_location'])
+                    );
                 } else {
-                    $orderLocation->create([
-                        'order_id' => $data['order_id'],
-                        'driver_id' => $data['driver_id'],
-                        'datetime' => $lastData['datetime'],
-                        'last_location' => json_encode($lastData['last_location']),
-                        'start_location' => $order->location_start
-                    ]);
+                    $dto = (new CreateOrderLocationDto())
+                        ->setOrderId($data['order_id'])
+                        ->setDriverId($data['driver_id'])
+                        ->setDatetime($lastData['datetime'])
+                        ->setLastLocation($lastData['last_location'])
+                        ->setStartLocation($order->location_start);
+
+                    (new CreateLastLocationAction())->handle($dto);
                 }
 
-                Redis::del('orders:' . $data['order_id']);
+                $saver->deleteAllItems($data);
             }
 
             return responseOk();
