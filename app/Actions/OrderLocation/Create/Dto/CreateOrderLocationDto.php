@@ -10,7 +10,7 @@ class CreateOrderLocationDto
     private int $order_id;
     private int $driver_id;
     private string $datetime;
-    private array $last_location;
+    private string $last_location;
     private string $start_location;
 
 
@@ -47,12 +47,12 @@ class CreateOrderLocationDto
         return $this;
     }
 
-    public function getLastLocation(): array
+    public function getLastLocation(): string
     {
         return $this->last_location;
     }
 
-    public function setLastLocation(array $last_location): self
+    public function setLastLocation(string $last_location): self
     {
         $this->last_location = $last_location;
         return $this;
