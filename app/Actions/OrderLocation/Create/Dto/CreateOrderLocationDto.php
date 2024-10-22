@@ -11,7 +11,7 @@ class CreateOrderLocationDto
     private int $driver_id;
     private string $datetime;
     private array $last_location;
-    private array $start_location;
+    private string $start_location;
 
 
     public function getOrderId(): int
@@ -63,7 +63,7 @@ class CreateOrderLocationDto
         return $this->start_location;
     }
 
-    public function setStartLocation(array $start_location): self
+    public function setStartLocation(string $start_location): self
     {
         $this->start_location = $start_location;
         return $this;
