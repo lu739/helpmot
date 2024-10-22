@@ -58,7 +58,7 @@ class CreateOrderLocationDto
         return $this;
     }
 
-    public function getStartLocation(): array
+    public function getStartLocation(): string
     {
         return $this->start_location;
     }
