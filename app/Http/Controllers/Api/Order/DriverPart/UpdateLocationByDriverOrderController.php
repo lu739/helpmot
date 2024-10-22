@@ -38,14 +38,14 @@ class UpdateLocationByDriverOrderController extends Controller
                     (new UpdateLastLocationAction())->handle((new UpdateOrderLocationDto())
                         ->setId($orderLocation->first()->id)
                         ->setDatetime($lastData['datetime'])
-                        ->setLastLocation($lastData['last_location'])
+                        ->setLastLocation(json_encode($lastData['last_location']))
                     );
                 } else {
                     $dto = (new CreateOrderLocationDto())
                         ->setOrderId($data['order_id'])
                         ->setDriverId($data['driver_id'])
                         ->setDatetime($lastData['datetime'])
-                        ->setLastLocation($lastData['last_location'])
+                        ->setLastLocation(json_encode($lastData['last_location']))
                         ->setStartLocation($order->location_start);
 
                     (new CreateLastLocationAction())->handle($dto);
