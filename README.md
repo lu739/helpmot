@@ -43,7 +43,7 @@
     REDIS_PREFIX=redishelpmot:
 
     REDIS_CLIENT=predis
-    REDIS_HOST=redis
+    REDIS_HOST=127.0.0.1(redis если докер)
     REDIS_PASSWORD=null
     REDIS_PORT=6379
 
