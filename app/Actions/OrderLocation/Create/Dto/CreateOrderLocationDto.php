@@ -19,7 +19,7 @@ class CreateOrderLocationDto
         return $this->order_id;
     }
 
-    public function setOrderId(int $order_id): CreateOrderLocationDto
+    public function setOrderId(int $order_id): self
     {
         $this->order_id = $order_id;
         return $this;
@@ -30,7 +30,7 @@ class CreateOrderLocationDto
         return $this->driver_id;
     }
 
-    public function setDriverId(int $driver_id): CreateOrderLocationDto
+    public function setDriverId(int $driver_id): self
     {
         $this->driver_id = $driver_id;
         return $this;
@@ -41,7 +41,7 @@ class CreateOrderLocationDto
         return $this->datetime;
     }
 
-    public function setDatetime(string $datetime): CreateOrderLocationDto
+    public function setDatetime(string $datetime): self
     {
         $this->datetime = $datetime;
         return $this;
@@ -52,7 +52,7 @@ class CreateOrderLocationDto
         return $this->last_location;
     }
 
-    public function setLastLocation(array $last_location): CreateOrderLocationDto
+    public function setLastLocation(array $last_location): self
     {
         $this->last_location = $last_location;
         return $this;
@@ -63,7 +63,7 @@ class CreateOrderLocationDto
         return $this->start_location;
     }
 
-    public function setStartLocation(array $start_location): CreateOrderLocationDto
+    public function setStartLocation(array $start_location): self
     {
         $this->start_location = $start_location;
         return $this;

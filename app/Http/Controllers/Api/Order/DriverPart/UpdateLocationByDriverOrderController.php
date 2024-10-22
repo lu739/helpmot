@@ -46,7 +46,7 @@ class UpdateLocationByDriverOrderController extends Controller
                         ->setDriverId($data['driver_id'])
                         ->setDatetime($lastData['datetime'])
                         ->setLastLocation($lastData['last_location'])
-                        ->setStartLocation($order->location_start);
+                        ->setStartLocation(json_decode($order->location_start, true));
 
                     (new CreateLastLocationAction())->handle($dto);
                 }
