@@ -12,19 +12,19 @@ class TakeByDriverOrderController extends Controller
 {
     public function __invoke(Order $order)
     {
-        try {
-            $order = (new TakeOrderByDriverAction())
-                ->handle(
-                    $order,
-                    request()->user()->driver,
-                    new InProgressOrderState($order)
-                );
+        $order = (new TakeOrderByDriverAction())
+            ->handle(
+                $order,
+                request()->user()->driver,
+                new InProgressOrderState($order)
+            );
 
-            return response()->json([
-                'data' => OrderActiveResource::make($order->load('client')),
-            ]);
-        } catch (\Throwable $e) {
-            return responseFailed(500, $e->getMessage());
+        if ($order instanceof \Throwable) {
+            return responseFailed(500, $order->getMessage());
         }
+
+        return response()->json([
+            'data' => OrderActiveResource::make($order->load('client')),
+        ]);
     }
 }

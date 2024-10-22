@@ -29,6 +29,26 @@
 10. если отслеживать статику не нужно то `npm run build`
 
 
+## Redis
+
+1. Установка на сервер на линух sudo apt install redis-server
+2. Открыть конфигурационный файл sudo nano /etc/redis/redis.conf и заменить supervised systemd (на локали этого не нужно)
+3. Перезапуск службы sudo systemctl restart redis.service
+4. Проверить работу sudo systemctl status redis. Если она выключена - включить sudo systemctl enable redis
+5. Запустить консоль redis-cli. Написать ping - в ответ вернется PONG. Вы великолепны
+6. Прописать в .env 
+    REDIS_MAX_ORDER_LOCATION= Это количество записей локации, которые будут сохраняться в редис прежде чем будут отправлены в бд (на старте это 5)
+    CACHE_STORE=redis
+    CACHE_PREFIX=cache:
+    REDIS_PREFIX=redishelpmot:
+
+    REDIS_CLIENT=predis
+    REDIS_HOST=redis
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+
+
 # Генерация сваггер документации
 sail artisan l5-swagger:generate - локаль
 php artisan l5-swagger:generate - сервер

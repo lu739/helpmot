@@ -13,6 +13,8 @@ return [
     'order_does_not_belong_to_driver' => 'Not enough rights to access order',
     'order_does_not_belong_to_client' => 'Not enough rights to access order',
     'order_does_not_active' => 'Wrong active order number',
+    'order_status_cant_be_changed' => 'Order status can not be changed',
+    'order_status_transaction_wrong' => 'Wrong order status transaction',
     'no_auth' => 'Unauthorized',
     'wrong_cridentials' => 'Wrong cridentials',
     'user_already_exists' => 'User already exists',

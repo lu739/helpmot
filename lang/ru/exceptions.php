@@ -13,6 +13,8 @@ return [
     'order_does_not_belong_to_driver' => 'Недостаточно прав для действий по заказу',
     'order_does_not_belong_to_client' => 'Недостаточно прав для действий по заказу',
     'order_does_not_active' => 'Неверно указан номер активного заказа',
+    'order_status_cant_be_changed' => 'Статус заказа не может быть изменен',
+    'order_status_transaction_wrong' => 'Неверная операция смены статуса заказа',
     'no_auth' => 'Требуется авторизация',
     'wrong_cridentials' => 'Неверный телефон или пароль',
     'user_already_exists' => 'Пользователь уже зарегистрирован',
