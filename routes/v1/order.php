@@ -1,6 +1,7 @@
 <?php
 
 use App\Enum\UserRole;
+use App\Http\Middleware\CheckClientHasActiveOrderThisType;
 use App\Http\Middleware\CheckDriverActivateAndNotBusy;
 use App\Http\Middleware\CheckOrderBelongsToClient;
 use App\Http\Middleware\CheckOrderBelongsToDriver;
@@ -22,6 +23,7 @@ Route::apiResource('/orders', \App\Http\Controllers\Api\Order\ClientPart\History
         CheckUserRole::class . ':' . UserRole::CLIENT->value,
     ]);
 
+// Client actions
 Route::post('/client/orders/{order}/cancel', \App\Http\Controllers\Api\Order\ClientPart\CancelledByClientOrderController::class)
     ->middleware([
         'auth:sanctum',
@@ -29,6 +31,14 @@ Route::post('/client/orders/{order}/cancel', \App\Http\Controllers\Api\Order\Cli
         CheckOrderBelongsToClient::class,
     ])
     ->name('client.orders.cancel');
+
+Route::post('/client/orders/active/create', \App\Http\Controllers\Api\Order\ClientPart\CreateActiveOrderController::class)
+    ->middleware([
+        'auth:sanctum',
+        CheckUserRole::class . ':' . UserRole::CLIENT->value,
+        CheckClientHasActiveOrderThisType::class,
+    ])
+    ->name('client.orders.active.create');
 
 
 // DriverPart

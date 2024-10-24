@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Order\CancelledByDriver;
+namespace App\Actions\Order\DriverPart\CancelledByDriver;
 
 use App\Actions\Order\ChangeOrderStatusAction;
 use App\Models\Driver;

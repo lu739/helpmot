@@ -4,6 +4,7 @@ return [
     'model_not_found' => 'Entity is not found in database',
     'user_has_not_data' => 'There is not enough data to finish',
     'route_not_found' => 'Route is not found',
+    'client_already_has_active_order_this_type' => 'Client already has active order of this type',
     'driver_not_activate' => 'Driver is not active',
     'driver_not_found' => 'Driver is not found',
     'driver_already_activate' => 'Driver is already active',

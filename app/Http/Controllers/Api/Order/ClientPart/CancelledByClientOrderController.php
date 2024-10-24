@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Order\ClientPart;
 
-use App\Actions\Order\CancelledByClient\CancelledOrderByClientAction;
+use App\Actions\Order\ClientPart\CancelledByClient\CancelledOrderByClientAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Order\OrderCompletedResource;
 use App\Models\Order;

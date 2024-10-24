@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Order\DriverPart;
 
-use App\Actions\Order\CancelledByDriver\CancelledOrderByDriverAction;
+use App\Actions\Order\DriverPart\CancelledByDriver\CancelledOrderByDriverAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Order\OrderCompletedResource;
 use App\Models\Order;

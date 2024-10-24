@@ -836,6 +836,61 @@
                 }
             }
         },
+        "/api/v1/client/orders/active/create": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Содание активного заказа клиентом",
+                "description": "\n        Необходим токен авторизации (клиента).\n        Возвращает новый созданный заказ в случае успеха.",
+                "operationId": "a63043204d9e0de169f126940823cae7",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "tow_track"
+                                    },
+                                    "location_start": {
+                                        "properties": {
+                                            "lat": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "55.751244"
+                                            },
+                                            "lot": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": "37.618423"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v1/orders": {
             "get": {
                 "tags": [
@@ -1807,6 +1862,71 @@
                     "email": {
                         "type": "string",
                         "example": "johndoe@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "OrderActiveResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 18745988
+                    },
+                    "client": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 18745988
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "John Doe"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "example": "79955756252"
+                            },
+                            "role": {
+                                "type": "string",
+                                "example": "client"
+                            },
+                            "email": {
+                                "type": "string",
+                                "example": "johndoe@example.com"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Активен"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "Регистрационные действия"
+                    },
+                    "location_start": {
+                        "properties": {
+                            "lat": {
+                                "type": "number",
+                                "format": "float",
+                                "example": "55.751244"
+                            },
+                            "lot": {
+                                "type": "number",
+                                "format": "float",
+                                "example": "37.618423"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "client_comment": {
+                        "type": "string",
+                        "example": "Блабла бла"
+                    },
+                    "date_start": {
+                        "type": "string|null",
+                        "example": "2024-09-28 21:30:46"
                     }
                 },
                 "type": "object"

@@ -4,6 +4,7 @@ return [
     'model_not_found' => 'Элемент не найден в базе',
     'user_has_not_data' => 'Недостаточно данных у юзера для завершения действия',
     'route_not_found' => 'Маршрут не существует',
+    'client_already_has_active_order_this_type' => 'Клиент уже имеет активный заказ этого типа',
     'driver_not_found' => 'Водитель не найден',
     'driver_not_activate' => 'Водитель не активен',
     'driver_have_not_been_activated' => 'Водитель не был активен',
