@@ -18,6 +18,8 @@ class Order extends Model
         'status',
         'date_start',
         'date_end',
+        'type',
+        'location_start',
     ];
 
     public function client() {

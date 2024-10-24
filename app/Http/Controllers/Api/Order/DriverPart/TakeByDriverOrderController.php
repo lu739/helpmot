@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Order\DriverPart;
 
-use App\Actions\Order\TakeByDriver\TakeOrderByDriverAction;
+use App\Actions\Order\DriverPart\TakeByDriver\TakeOrderByDriverAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Order\OrderActiveResource;
 use App\Models\Order;
