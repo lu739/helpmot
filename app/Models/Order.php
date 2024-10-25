@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -26,14 +28,20 @@ class Order extends Model
         return $this->belongsTo(User::class, 'client_id');
     }
 
+    // Тут получаем юзера, который является водителем, из таблицы users
     public function driver() {
         return $this->belongsTo(User::class, 'driver_id');
     }
 
-    public function orderLocation()
+    // Тут получаем данные водителя из таблицы drivers
+    public function orderDriver() {
+        return $this->belongsTo(Driver::class, 'driver_id', 'user_id');
+    }
+
+    public function orderLocation(): hasOne
     {
         return $this->hasOne(OrderLocation::class)
-            ->where('driver_id', $this->driver()->id);
+            ->where('driver_id', $this->driver()->first()->id);
     }
 
     public function isActive()
