@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Swagger;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Resources\Order\OrderInProgressResource;
+use App\Http\Resources\User\UserResource;
 
 
 /**
@@ -123,6 +124,28 @@ use App\Http\Controllers\Controller;
  *     ),
  *     @OA\Property(property="client_comment", type="string", example="Блабла бла"),
  *     @OA\Property(property="date_start", type="string|null", example="2024-09-28 21:30:46"),
+ * )
+ *
+ * @OA\Schema(
+ *      schema="OrderInProgressResource",
+ *          @OA\Property(property="id", type="integer", example=18745988),
+ *          @OA\Property(property="driver", type="object", ref="#/components/schemas/UserResource"),
+ *          @OA\Property(property="client", type="object", ref="#/components/schemas/UserResource"),
+ *          @OA\Property(property="status", type="string", example="Активен"),
+ *          @OA\Property(property="type", type="string", example="Регистрационные действия"),
+ *          @OA\Property(property="location_start", type="object",
+ *              @OA\Property(property="lat", type="float", example="55.751244"),
+ *              @OA\Property(property="lot", type="float", example="37.618423"),
+ *          ),
+ *          @OA\Property(property="order_location", type="object",
+ *              @OA\Property(property="last_location", type="object",
+ *                  @OA\Property(property="lat", type="float", example="55.751244"),
+ *                  @OA\Property(property="lot", type="float", example="37.618423"),
+ *              ),
+ *              @OA\Property(property="datetime", type="вфеу", example="2024-09-28 21:30:46"),
+ *          ),
+ *          @OA\Property(property="client_comment", type="string", example="Блабла бла"),
+ *          @OA\Property(property="date_start", type="string|null", example="2024-09-28 21:30:46"),
  * )
  */
 class MainController extends Controller

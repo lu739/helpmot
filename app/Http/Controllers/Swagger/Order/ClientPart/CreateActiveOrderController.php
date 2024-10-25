@@ -30,7 +30,7 @@ use App\Http\Controllers\Controller;
  *         response=200,
  *         description="OK",
  *         @OA\JsonContent(
- *             @OA\Schema(ref="#/components/schemas/OrderActiveResource"),
+ *             @OA\Property(property="data", type="object", ref="#/components/schemas/OrderActiveResource"),
  *         )
  *     )
  * )

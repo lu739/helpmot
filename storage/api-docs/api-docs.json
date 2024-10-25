@@ -113,10 +113,28 @@
                                 "schema": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/UserDriverResource"
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserDriverResource"
+                                                },
+                                                "current_order": {
+                                                    "$ref": "#/components/schemas/OrderInProgressResource"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "property": "data"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/UserResource"
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "current_order": {
+                                                    "$ref": "#/components/schemas/OrderInProgressResource"
+                                                }
+                                            },
+                                            "type": "object",
+                                            "property": "data"
                                         }
                                     ]
                                 }
@@ -879,7 +897,14 @@
                         "description": "OK",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/OrderActiveResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
                             }
                         }
                     }
@@ -1916,6 +1941,76 @@
                                 "type": "number",
                                 "format": "float",
                                 "example": "37.618423"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "client_comment": {
+                        "type": "string",
+                        "example": "Блабла бла"
+                    },
+                    "date_start": {
+                        "type": "string|null",
+                        "example": "2024-09-28 21:30:46"
+                    }
+                },
+                "type": "object"
+            },
+            "OrderInProgressResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 18745988
+                    },
+                    "driver": {
+                        "$ref": "#/components/schemas/UserResource"
+                    },
+                    "client": {
+                        "$ref": "#/components/schemas/UserResource"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Активен"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "Регистрационные действия"
+                    },
+                    "location_start": {
+                        "properties": {
+                            "lat": {
+                                "type": "number",
+                                "format": "float",
+                                "example": "55.751244"
+                            },
+                            "lot": {
+                                "type": "number",
+                                "format": "float",
+                                "example": "37.618423"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "order_location": {
+                        "properties": {
+                            "last_location": {
+                                "properties": {
+                                    "lat": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "55.751244"
+                                    },
+                                    "lot": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "37.618423"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "datetime": {
+                                "type": "вфеу",
+                                "example": "2024-09-28 21:30:46"
                             }
                         },
                         "type": "object"

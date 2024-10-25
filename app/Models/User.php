@@ -3,10 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enum\OrderStatus;
+use App\Enum\OrderType;
 use App\Enum\UserRole;
 use App\Services\ConfirmSms\Interfaces\SmsUserInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -83,6 +86,18 @@ class User extends Authenticatable implements SmsUserInterface
     public function orders()
     {
         return $this->hasMany(Order::class, 'client_id');
+    }
+
+    public function inProgressOrder(): HasOne
+    {
+        return $this
+            ->hasOne(Order::class, 'client_id')
+            ->where('status', OrderStatus::IN_PROGRESS->value)
+            // ToDo как только будут добавлены другие типы заказов:
+            //   тут надо будет отдавать несколько заказов
+            //   и связь менять на HasMany
+            //   и делать несколько вкладок активных/в процессе заказов на фронте
+            ->where('type', OrderType::TOW_TRUCK->value);
     }
 
     public function driver()
