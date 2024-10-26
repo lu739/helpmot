@@ -4,7 +4,6 @@ namespace App\Http\Resources\Order;
 
 use App\Enum\OrderStatus;
 use App\Enum\OrderType;
-use App\Http\Resources\OrderLocation\OrderLocationMinifiedResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +21,7 @@ class OrderInProgressResource extends JsonResource
             'date_start' => $this->date_start,
             'driver' => UserResource::make($this->driver),
             'client' => UserResource::make($this->client),
-            'order_location' => OrderLocationMinifiedResource::make($this->orderLocation),
+            'order_location' => json_decode($this->order_location),
         ];
     }
 }

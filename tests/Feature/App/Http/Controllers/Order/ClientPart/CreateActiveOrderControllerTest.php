@@ -35,7 +35,7 @@ class CreateActiveOrderControllerTest extends TestCase
 
         $this->newOrderData = [
             'client_id' => $this->client->id,
-            'location_start' => json_decode(createLocation(), true),
+            'location_start' => json_decode(createLocation('test address'), true),
             'comment' => 'test comment',
         ];
 

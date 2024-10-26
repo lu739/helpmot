@@ -149,7 +149,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "exceptions.user_not_found"
+                                            "example": "User not found"
                                         }
                                     },
                                     "type": "object"
@@ -871,6 +871,10 @@
                                         "type": "string",
                                         "example": "tow_track"
                                     },
+                                    "client_comment": {
+                                        "type": "string",
+                                        "example": "Бла блабла"
+                                    },
                                     "location_start": {
                                         "properties": {
                                             "lat": {
@@ -882,6 +886,10 @@
                                                 "type": "number",
                                                 "format": "float",
                                                 "example": "37.618423"
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "example": "Москва Новая улица 1"
                                             }
                                         },
                                         "type": "object"
@@ -1941,6 +1949,10 @@
                                 "type": "number",
                                 "format": "float",
                                 "example": "37.618423"
+                            },
+                            "address": {
+                                "type": "string",
+                                "example": "19402 Langworth Crest\\nSchneidermouth, WV 51672"
                             }
                         },
                         "type": "object"

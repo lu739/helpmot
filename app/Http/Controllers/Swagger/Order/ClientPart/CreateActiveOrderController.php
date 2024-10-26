@@ -19,11 +19,13 @@ use App\Http\Controllers\Controller;
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  @OA\Property(property="type", type="string", example="tow_track"),
+ *                  @OA\Property(property="client_comment", type="string", example="Бла блабла"),
  *                  @OA\Property(property="location_start", type="object",
  *                       @OA\Property(property="lat", type="float", example="55.751244"),
  *                       @OA\Property(property="lot", type="float", example="37.618423"),
- *                   ),
- *             )
+ *                       @OA\Property(property="address", type="string", example="Москва Новая улица 1"),
+ *                  ),
+ *              )
  *         )
  *     ),
  *     @OA\Response(

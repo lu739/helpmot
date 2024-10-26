@@ -27,6 +27,7 @@ class CreateActiveOrderRequest extends FormRequest
             'location_start' => ['required', 'array'],
             'location_start.lat' => ['required', 'numeric'],
             'location_start.lot' => ['required', 'numeric'],
+            'location_start.address' => ['required', 'string'],
             'type' => ['required', new Enum(OrderType::class)],
             'comment' => ['nullable', 'string'],
         ];
