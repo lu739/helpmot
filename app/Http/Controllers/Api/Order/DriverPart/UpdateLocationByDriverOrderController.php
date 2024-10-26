@@ -29,6 +29,10 @@ class UpdateLocationByDriverOrderController extends Controller
             if ($count > env('REDIS_MAX_ORDER_LOCATION')) {
                 $lastData = $saver->removeOldItems($data,$count - (env('REDIS_MAX_ORDER_LOCATION') + 1));
 
+                if (!$lastData) {
+                    throw new \Exception('Saver error');
+                }
+
                 $orderLocation = OrderLocation::query()
                     ->where('order_id', $data['order_id'])
                     ->where('driver_id', $data['driver_id']);
