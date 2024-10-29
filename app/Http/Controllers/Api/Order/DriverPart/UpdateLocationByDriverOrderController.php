@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Api\Order\DriverPart;
 
-use App\Actions\OrderLocation\Create\CreateLastLocationAction;
-use App\Actions\OrderLocation\Create\Dto\CreateOrderLocationDto;
-use App\Actions\OrderLocation\Update\Dto\UpdateOrderLocationDto;
-use App\Actions\OrderLocation\Update\UpdateLastLocationAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Order\DriverPart\UpdateLocationRequest;
+use App\Jobs\SaveLastOrderLocationJob;
 use App\Models\Order;
 use App\Models\OrderLocation;
 use App\Services\SaveLocation\Interfaces\SaverLocationInterface;
@@ -15,7 +12,11 @@ use Carbon\Carbon;
 
 class UpdateLocationByDriverOrderController extends Controller
 {
-    public function __invoke(Order $order, UpdateLocationRequest $request, SaverLocationInterface $saver)
+    public function __invoke(
+        Order $order,
+        UpdateLocationRequest $request,
+        SaverLocationInterface $saver
+    )
     {
         $data = $request->validated();
 
@@ -35,25 +36,11 @@ class UpdateLocationByDriverOrderController extends Controller
 
                 $orderLocation = OrderLocation::query()
                     ->where('order_id', $data['order_id'])
-                    ->where('driver_id', $data['driver_id']);
+                    ->where('driver_id', $data['driver_id'])
+                    ->first();
 
-                // Todo: Вынести в job
-                if ($orderLocation->exists()) {
-                    (new UpdateLastLocationAction())->handle((new UpdateOrderLocationDto())
-                        ->setId($orderLocation->first()->id)
-                        ->setDatetime($lastData['datetime'])
-                        ->setLastLocation(json_encode($lastData['last_location']))
-                    );
-                } else {
-                    $dto = (new CreateOrderLocationDto())
-                        ->setOrderId($data['order_id'])
-                        ->setDriverId($data['driver_id'])
-                        ->setDatetime($lastData['datetime'])
-                        ->setLastLocation(json_encode($lastData['last_location']))
-                        ->setStartLocation($order->location_start);
-
-                    (new CreateLastLocationAction())->handle($dto);
-                }
+                SaveLastOrderLocationJob::dispatch($orderLocation, array_merge($data, $lastData), $order)
+                    ->onQueue('last_location');
 
                 $saver->deleteAllItems($data);
             }
